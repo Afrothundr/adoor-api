@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const neighborhoodPreferenceSchema = new Schema({
+    preferencesID: String,
     caresAboutSchoolChoice : Boolean,
     caresAboutGroceryStores : Boolean,
     caresAboutHospitals : Boolean,
@@ -9,4 +10,4 @@ const neighborhoodPreferenceSchema = new Schema({
     caresAboutParks : Boolean
 });
 
-module.exports = mongoose.model('Neighborhood-Preference', neighborhoodPreferencesSchema);
+module.exports = mongoose.model('Neighborhood-Preference', neighborhoodPreferenceSchema);

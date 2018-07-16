@@ -4,8 +4,9 @@ const neighborhoodPreference = require('./neighborhood-preferences.model');
 const propertyPreference = require('./property-preferences.model');
 
 const preferencesSchema = new Schema({
-    neighborhood_preferences: new neighborhoodPreference.objectId,
-    property_preferences: new propertyPreference.objectId
+    buyerID: String,
+    neighborhood_preferences: Schema.Types.ObjectId,
+    property_preferences: Schema.Types.ObjectId,
 });
 
 module.exports = mongoose.model('Preference', preferencesSchema);
