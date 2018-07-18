@@ -1,9 +1,6 @@
-const {
-    GraphQLObjectType,
-    GraphQLInt
-  } = require("graphql");
+import { GraphQLObjectType, GraphQLInt } from "graphql";
 
-const propertyPreference =  new GraphQLObjectType({
+export const propertyPreference =  new GraphQLObjectType({
     name: "property-preference",
     description: 'The property prefrences for a buyer',
     fields: () => ({
@@ -29,5 +26,3 @@ const propertyPreference =  new GraphQLObjectType({
       } 
     })
 }); 
-
-module.exports = { propertyPreference };

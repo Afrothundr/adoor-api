@@ -1,10 +1,6 @@
-const {
-    GraphQLObjectType,
-    GraphQLInt,
-    GraphQLString
-  } = require("graphql");
+import { GraphQLObjectType, GraphQLInt, GraphQLString } from "graphql";
 
-const demographics =  new GraphQLObjectType({
+export const demographics =  new GraphQLObjectType({
     name: "demographics",
     description: 'The demographics of the buyer',
     fields: () => ({
@@ -29,6 +25,4 @@ const demographics =  new GraphQLObjectType({
           description: 'The prefered gender identity of the Buyer'
       } 
     })
-}); 
-
-module.exports = { demographics };
+});

@@ -1,16 +1,11 @@
-const {
-    GraphQLObjectType,
-    GraphQLID,
-    GraphQLString,
-    GraphQLList
-} = require("graphql");
+import { GraphQLID, GraphQLList, GraphQLObjectType, GraphQLString } from "graphql";
+import { find as _find } from '../../../models/buyer/demographics.model';
+import { find } from '../../../models/buyer/preferences.model';
+import demographics from './demographics/types';
+import preferences from './preferences/types';
 
-const PreferencesModel = require('../../../models/buyer/preferences.model');
-const DemographicsModel = require('../../../models/buyer/demographics.model');
-const demographics = require('./demographics/types');
-const preferences = require('./preferences/types');
 
-const buyer = new GraphQLObjectType({
+export const buyer = new GraphQLObjectType({
     name: "buyer",
     description: 'buyer looking for a property listing',
     fields: () => ({
@@ -55,17 +50,15 @@ const buyer = new GraphQLObjectType({
             type: preferences,
             description: 'the preferences of the Buyer',
             resolve(parent){
-                return PreferencesModel.find({buyerID: parent.id});
+                return find({buyerID: parent.id});
             } 
         },
         demographics: {
             type: demographics,
             description: 'the demographics of the Buyer',
             resolve(parent){
-                return DemographicsModel.find({buyerID: parent.id});
+                return _find({buyerID: parent.id});
             } 
         }
     })
 });
-
-module.exports = { buyer };

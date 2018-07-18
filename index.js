@@ -8,7 +8,7 @@ const app = express();
 app.use(cors());
 
 //connect to database
-mongoose.connect('mongodb://admin:test123@ds123171.mlab.com:23171/ninja-tut');
+mongoose.connect('mongodb://admin:adoorR0cks@ds231501.mlab.com:31501/adoor-api_dev', {useNewUrlParser: true});
 mongoose.connection.once('open', () => {
     console.log('connected to database');
 });

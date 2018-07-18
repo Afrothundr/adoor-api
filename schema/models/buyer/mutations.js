@@ -1,13 +1,9 @@
-const {
-    GraphQLNonNull,
-    GraphQLString,
-    GraphQLList
-} = require('graphql');
+import { GraphQLNonNull, GraphQLString, GraphQLList } from 'graphql';
 
-const buyerType = require('./types');
-const BuyerModelType = require('../../../models/buyer/buyer.model');
+import buyerType from './types';
+import BuyerModelType from '../../../models/buyer/buyer.model';
 
-module.exports = Buyer => ({
+export default Buyer => ({
     createBuyer: {
         type: buyerType,
         args: {

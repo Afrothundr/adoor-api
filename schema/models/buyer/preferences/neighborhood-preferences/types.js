@@ -1,9 +1,6 @@
-const {
-    GraphQLObjectType,
-    GraphQLBoolean
-  } = require("graphql");
+import { GraphQLObjectType, GraphQLBoolean } from "graphql";
 
-const neighboorhoodPreference =  new GraphQLObjectType({
+export const neighboorhoodPreference =  new GraphQLObjectType({
     name: "neighborhood-preference",
     description: 'The neighboorhood prefrences for a buyer',
     fields: () => ({
@@ -29,5 +26,3 @@ const neighboorhoodPreference =  new GraphQLObjectType({
       } 
     })
 });
-
-module.exports = { neighboorhoodPreference }
