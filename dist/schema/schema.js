@@ -1,82 +1,83 @@
-import { 
-    GraphQLObjectType,
-    GraphQLSchema,
-    GraphQLNonNull,
-    GraphQLString,
-    GraphQLList
-} from 'graphql';
-import { buyer } from './models/buyer/types';
-const Buyer = require('../models/buyer/buyer.model');
+'use strict';
 
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
-const RootQuery = new GraphQLObjectType({
+var _graphql = require('graphql');
+
+var _types = require('./models/buyer/types');
+
+var Buyer = require('../models/buyer/buyer.model');
+
+var RootQuery = new _graphql.GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
         buyer: {
-            type: buyer,
+            type: _types.buyer,
             args: {
                 id: {
                     descriptiopn: 'ID of buyer',
-                    type: new GraphQLNonNull(GraphQLString)
+                    type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
                 }
             },
-            resolve(args) {
+            resolve: function resolve(args) {
                 return Buyer.findById(args.id);
             }
         },
         buyers: {
-            type: new GraphQLList(buyer),
-            resolve() {
+            type: new _graphql.GraphQLList(_types.buyer),
+            resolve: function resolve() {
                 return Buyer.find({});
             }
         }
     }
 });
 
-const Mutation = new GraphQLObjectType({
+var Mutation = new _graphql.GraphQLObjectType({
     name: 'Mutation',
     fields: {
         createBuyer: {
-            type: buyer,
+            type: _types.buyer,
             args: {
                 firstName: {
                     description: 'First Name',
-                    type: new GraphQLNonNull(GraphQLString)
+                    type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
                 },
                 lastName: {
                     description: 'Last Name',
-                    type: new GraphQLNonNull(GraphQLString)
+                    type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
                 },
                 email: {
                     description: 'Email Address',
-                    type: new GraphQLNonNull(GraphQLString)
+                    type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
                 },
                 phoneNumber: {
                     description: 'Phone Number',
-                    type: new GraphQLNonNull(GraphQLString)
+                    type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
                 },
                 password: {
                     description: 'password',
-                    type: new GraphQLNonNull(GraphQLString)
+                    type: new _graphql.GraphQLNonNull(_graphql.GraphQLString)
                 },
                 googleID: {
                     description: 'Google OAuth Token',
-                    type: GraphQLString
+                    type: _graphql.GraphQLString
                 },
                 facebookID: {
                     description: 'Google OAuth Token',
-                    type: GraphQLString
+                    type: _graphql.GraphQLString
                 },
                 likedListings: {
                     description: 'List of matched listings',
-                    type: new GraphQLNonNull(new GraphQLList(GraphQLString))
+                    type: new _graphql.GraphQLNonNull(new _graphql.GraphQLList(_graphql.GraphQLString))
                 },
                 favoritedListings: {
                     description: 'List of favorited listings',
-                    type: new GraphQLNonNull(new GraphQLList(GraphQLString))
+                    type: new _graphql.GraphQLNonNull(new _graphql.GraphQLList(_graphql.GraphQLString))
                 },
-                resolve(args) {
-                    const buyer = new BuyerModelType({
+                resolve: function resolve(args) {
+                    var buyer = new BuyerModelType({
                         firstName: args.firstName,
                         lastName: args.lastName,
                         email: args.email,
@@ -94,8 +95,7 @@ const Mutation = new GraphQLObjectType({
     }
 });
 
-export default new GraphQLSchema({
+exports.default = new _graphql.GraphQLSchema({
     query: RootQuery,
     mutation: Mutation
-})
-
+});

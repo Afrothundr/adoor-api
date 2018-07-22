@@ -11,7 +11,7 @@ const listingSchema = new Schema({
     priceHistory : [Number],
     views: Number,
     yearBuilt : Number,
-    renovatedYear? : Number,
+    renovatedYearn : Number,
     heating : String,
     cooling : String,
     kitchenType : String,
