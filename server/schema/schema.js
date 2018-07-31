@@ -204,7 +204,8 @@ const RootQuery = new GraphQLObjectType({
 });
 
 const buyerInputType = new GraphQLInputObjectType({
-    name: 'Buyer_Input',
+    name: 'BuyerInputType',
+    description: 'Buyer payload definition',
     fields: () => ({
     firstName: {
         description: 'First Name',
@@ -247,15 +248,12 @@ const buyerInputType = new GraphQLInputObjectType({
 })
 
 
-const Mutation = new GraphQLObjectType({
-    name: 'Mutation',
-    description: 'Things we can change',
-    fields: () => ({
+const Mutations = {
         createBuyer: {
             type: buyerType,
             args: {
-                newBuyer: { type: buyerInputType },
-                resolve(rootValue, input) {
+                input: { type: new GraphQLNonNull(buyerInputType) },
+                resolve: (rootValue, input) => {
                     const buyer = new Buyer({
                         firstName: input.firstName,
                         lastName: input.lastName,
@@ -271,11 +269,15 @@ const Mutation = new GraphQLObjectType({
                 }
             }
         }
-    })
-});
+};
 
 export default new GraphQLSchema({
     query: RootQuery,
-    mutation: Mutation
+    mutation: new GraphQLObjectType({
+        name: 'Mutation',
+        fields: () => ({
+            Mutations
+        })
+    })
 })
 
