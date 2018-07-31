@@ -1,5 +1,6 @@
 import { 
     GraphQLObjectType,
+    GraphQLInputObjectType,
     GraphQLSchema,
     GraphQLNonNull,
     GraphQLString,
@@ -202,69 +203,79 @@ const RootQuery = new GraphQLObjectType({
     }
 });
 
+const buyerInputType = new GraphQLInputObjectType({
+    name: 'Buyer_Input',
+    fields: () => ({
+    firstName: {
+        description: 'First Name',
+        type: new GraphQLNonNull(GraphQLString)
+    },
+    lastName: {
+        description: 'Last Name',
+        type: new GraphQLNonNull(GraphQLString)
+    },
+    email: {
+        description: 'Email Address',
+        type: new GraphQLNonNull(GraphQLString)
+    },
+    phoneNumber: {
+        description: 'Phone Number',
+        type: new GraphQLNonNull(GraphQLString)
+    },
+    password: {
+        description: 'password',
+        type: new GraphQLNonNull(GraphQLString)
+    },
+    googleID: {
+        description: 'Google OAuth Token',
+        type: GraphQLString
+    },
+    facebookID: {
+        description: 'Google OAuth Token',
+        type: GraphQLString
+    },
+    likedListings: {
+        description: 'List of matched listings',
+        type: new GraphQLNonNull(new GraphQLList(GraphQLString))
+    },
+    favoritedListings: {
+        description: 'List of favorited listings',
+        type: new GraphQLNonNull(new GraphQLList(GraphQLString))
+    }
+})
+    
+})
+
+
 const Mutation = new GraphQLObjectType({
     name: 'Mutation',
-    fields: {
+    description: 'Things we can change',
+    fields: () => ({
         createBuyer: {
             type: buyerType,
             args: {
-                firstName: {
-                    description: 'First Name',
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                lastName: {
-                    description: 'Last Name',
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                email: {
-                    description: 'Email Address',
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                phoneNumber: {
-                    description: 'Phone Number',
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                password: {
-                    description: 'password',
-                    type: new GraphQLNonNull(GraphQLString)
-                },
-                googleID: {
-                    description: 'Google OAuth Token',
-                    type: GraphQLString
-                },
-                facebookID: {
-                    description: 'Google OAuth Token',
-                    type: GraphQLString
-                },
-                likedListings: {
-                    description: 'List of matched listings',
-                    type: new GraphQLNonNull(new GraphQLList(GraphQLString))
-                },
-                favoritedListings: {
-                    description: 'List of favorited listings',
-                    type: new GraphQLNonNull(new GraphQLList(GraphQLString))
-                },
-                resolve(args) {
+                newBuyer: { type: buyerInputType },
+                resolve(rootValue, input) {
                     const buyer = new Buyer({
-                        firstName: args.firstName,
-                        lastName: args.lastName,
-                        email: args.email,
-                        phoneNumber: args.phoneNumber,
-                        password: args.password,
-                        googleID: args.googleID,
-                        facebookID: args.facebookID,
-                        likedListings: args.likedListings,
-                        favoritedListings: args.favoritedListings
+                        firstName: input.firstName,
+                        lastName: input.lastName,
+                        email: input.email,
+                        phoneNumber: input.phoneNumber,
+                        password: input.password,
+                        googleID: input.googleID,
+                        facebookID: input.facebookID,
+                        likedListings: input.likedListings,
+                        favoritedListings: input.favoritedListings
                     });
                     return buyer.save();
                 }
             }
         }
-    }
+    })
 });
 
 export default new GraphQLSchema({
     query: RootQuery,
-    // mutation: Mutation
+    mutation: Mutation
 })
 
