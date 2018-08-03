@@ -1,9 +1,9 @@
-import { GraphQLNonNull, GraphQLString, GraphQLList } from 'graphql';
-
+import { GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
+import { find, findById } from '../../../models/buyer/buyer.model';
 import buyerType from './types';
-import { findById, find } from '../../../models/buyer/buyer.model';
 
-export default Buyer => ({
+
+export default buyerQueries = {
     buyer: {
         type: buyerType,
         args: {
@@ -22,4 +22,4 @@ export default Buyer => ({
             return find({});
         }
     }
-})
+};

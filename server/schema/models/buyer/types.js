@@ -1,11 +1,11 @@
 import { GraphQLID, GraphQLList, GraphQLObjectType, GraphQLString } from "graphql";
-import { find as _find } from '../../../models/buyer/demographics.model';
-import { find } from '../../../models/buyer/preferences.model';
-import demographics from './demographics/types';
-import preferences from './preferences/types';
+import { find } from '../../../models/buyer/demographics.model';
+import { find as _find } from '../../../models/buyer/preferences.model';
+import { demographicsType } from './demographics/types';
+import { preferenceType } from './preferences/types';
 
 
-export const buyer = new GraphQLObjectType({
+export const buyerType = new GraphQLObjectType({
     name: "buyer",
     description: 'buyer looking for a property listing',
     fields: () => ({
@@ -46,19 +46,19 @@ export const buyer = new GraphQLObjectType({
             type: new GraphQLList(GraphQLString),
             description: 'A list of favorited matched listings'
         },
-        preferences: {
-            type: preferences,
-            description: 'the preferences of the Buyer',
-            resolve(parent){
-                return find({buyerID: parent.id});
-            } 
-        },
-        demographics: {
-            type: demographics,
-            description: 'the demographics of the Buyer',
-            resolve(parent){
-                return _find({buyerID: parent.id});
-            } 
-        }
+        // preferences: {
+        //     type: preferenceType,
+        //     description: 'the preferences of the Buyer',
+        //     resolve(parent){
+        //         return _find({buyerID: parent.id});
+        //     } 
+        // },
+        // demographics: {
+        //     type: demographicsType,
+        //     description: 'the demographics of the Buyer',
+        //     resolve(parent){
+        //         return find({buyerID: parent.id});
+        //     } 
+        // }
     })
 });

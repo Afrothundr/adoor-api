@@ -3,7 +3,7 @@ import { GraphQLNonNull, GraphQLString, GraphQLList } from 'graphql';
 import buyerType from './types';
 import BuyerModelType from '../../../models/buyer/buyer.model';
 
-export default Buyer => ({
+export const buyerMutations = {
     createBuyer: {
         type: buyerType,
         args: {
@@ -59,4 +59,4 @@ export default Buyer => ({
             }
         }
     }
-});
+};

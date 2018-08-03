@@ -1,24 +1,19 @@
-const express = require('express');
-const graphqlHTTP = require('express-graphql');
-const schema = require('./schema/schema').default;
-const mongoose = require('mongoose');
-const cors = require('cors');
-const app = express();
+import { GraphQLServer } from 'graphql-yoga';
 
-app.use(cors());
+const typeDefs = `
+type Query {
+  info: String!
+}
+`
 
-//connect to database
-mongoose.connect('mongodb://admin:adoorR0cks@ds231501.mlab.com:31501/adoor-api_dev', {useNewUrlParser: true});
-mongoose.connection.once('open', () => {
-    console.log('connected to database');
-});
+const resolvers = {
+  Query: {
+    info: () => `This is the API of a Hackernews Clone`
+  }
+}
 
-app.use('/graphql', graphqlHTTP({
-    schema,
-    pretty: true,
-    graphiql: true
-}))
-
-app.listen(4000, () => {
-    console.log('now listening for requests on port 4000');
+const server = new GraphQLServer({
+  typeDefs,
+  resolvers,
 })
+server.start(() => console.log(`Server is running on http://localhost:4000`))

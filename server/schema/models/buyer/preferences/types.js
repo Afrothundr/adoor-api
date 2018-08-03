@@ -6,7 +6,7 @@ import { find } from '../../../../models/buyer/property-preferences.model';
 import { find as _find } from '../../../../models/buyer/neighborhood-preferences.model';
 
 
-export const preference =  new GraphQLObjectType({
+export const preferenceType =  new GraphQLObjectType({
     name: "preferences",
     description: 'The prefrences for a buyer',
     fields: () => ({
