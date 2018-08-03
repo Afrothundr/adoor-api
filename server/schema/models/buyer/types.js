@@ -46,19 +46,19 @@ export const buyerType = new GraphQLObjectType({
             type: new GraphQLList(GraphQLString),
             description: 'A list of favorited matched listings'
         },
-        // preferences: {
-        //     type: preferenceType,
-        //     description: 'the preferences of the Buyer',
-        //     resolve(parent){
-        //         return _find({buyerID: parent.id});
-        //     } 
-        // },
-        // demographics: {
-        //     type: demographicsType,
-        //     description: 'the demographics of the Buyer',
-        //     resolve(parent){
-        //         return find({buyerID: parent.id});
-        //     } 
-        // }
+        preferences: {
+            type: preferenceType,
+            description: 'the preferences of the Buyer',
+            resolve(parent){
+                return _find({buyerID: parent.id});
+            } 
+        },
+        demographics: {
+            type: demographicsType,
+            description: 'the demographics of the Buyer',
+            resolve(parent){
+                return find({buyerID: parent.id});
+            } 
+        }
     })
 });
