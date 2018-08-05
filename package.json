@@ -21,7 +21,6 @@
     "express": "^4.16.3",
     "express-graphql": "^0.6.12",
     "graphql": "^0.13.2",
-    "graphql-yoga": "^1.15.1",
     "mongoose": "^5.1.7"
   },
   "devDependencies": {

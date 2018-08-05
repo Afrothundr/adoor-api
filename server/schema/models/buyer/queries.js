@@ -2,8 +2,9 @@ import { GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
 import { find, findById } from '../../../models/buyer/buyer.model';
 import buyerType from './types';
 
+console.log(buyerType);
 
-export default buyerQueries = {
+export const buyerQueries = {
     buyer: {
         type: buyerType,
         args: {
@@ -12,13 +13,13 @@ export default buyerQueries = {
                 type: new GraphQLNonNull(GraphQLString)
             }
         },
-        resolve(args) {
+        resolve: (args) => {
             return findById(args.id);
         }
     },
     buyers: {
         type: new GraphQLList(buyerType),
-        resolve() {
+        resolve: () => {
             return find({});
         }
     }

@@ -1,5 +1,5 @@
 
-import { GraphQLObjectType } from 'graphql';
+import { GraphQLObjectType, GraphQLSchema } from 'graphql';
 import { buyerQueries } from './models/buyer/queries';
 import { buyerMutations } from './models/buyer/mutations';
 

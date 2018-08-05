@@ -1,8 +1,8 @@
-const express = require('express');
-const graphqlHTTP = require('express-graphql');
-const schema = require('./schema/schema').default;
+import express from 'express';
+import graphqlHTTP from 'express-graphql';
+import schema from './schema/schema';
 const mongoose = require('mongoose');
-const cors = require('cors');
+import cors from 'cors';
 const app = express();
 
 app.use(cors());
