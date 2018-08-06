@@ -227,13 +227,8 @@ const RootQuery = new GraphQLObjectType({
     fields: {
         buyer: {
             type: buyerType,
-            args: {
-                id: {
-                    descriptiopn: 'ID of buyer',
-                    type: new GraphQLNonNull(GraphQLString)
-                }
-            },
-            resolve(args) {
+            args: { id: { type: GraphQLID } },
+            resolve(parent, args) {
                 return Buyer.findById(args.id);
             }
         },
