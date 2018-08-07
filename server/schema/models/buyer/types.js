@@ -1,5 +1,8 @@
-import { GraphQLBoolean, GraphQLID, GraphQLInputObjectType, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { demographics } from './demographics/types';
+import { neighboorhoodPreference } from './preferences/neighborhood-preferences/types';
+import { propertyPreference } from './preferences/property-preferences/types';
+import { preferenceType } from './preferences/types';
 
 const Demographics = require('../../../models/buyer/demographics.model');
 const Preference = require('../../../models/buyer/preferences.model');
@@ -48,7 +51,7 @@ export const buyerType = new GraphQLObjectType({
             description: 'A list of favorited matched listings'
         },
         preferences: {
-            type: preference,
+            type: preferenceType,
             description: 'the preferences of the Buyer',
             resolve(parent) {
                 return Preference.find({ buyerID: parent.id });
@@ -65,81 +68,6 @@ export const buyerType = new GraphQLObjectType({
 });
 
 
-const preference = new GraphQLObjectType({
-    name: "preferences",
-    description: 'The prefrences for a buyer',
-    fields: () => ({
-        id: { type: GraphQLID },
-        propertyPreference: {
-            type: propertyPreference,
-            description: 'Propery preferences for the Buyer',
-            resolve(parent) {
-                return PropertyPreferences.find({ preferencesID: parent.id });
-            }
-        },
-        neighboorhoodPreference: {
-            type: neighboorhoodPreference,
-            description: 'Neighboorhood preferences for the Buyer',
-            resolve(parent) {
-                return NeighboorhoodPreferences.find({ preferencesID: parent.id });
-            }
-        }
-    })
-});
-
-const neighboorhoodPreference = new GraphQLObjectType({
-    name: "neighborhood_preference",
-    description: 'The neighboorhood prefrences for a buyer',
-    fields: () => ({
-        caresAboutSchoolChoice: {
-            type: GraphQLBoolean,
-            description: 'Does the Buyer care about local school scores?'
-        },
-        caresAboutGroceryStores: {
-            type: GraphQLBoolean,
-            description: 'Does the Buyer care about grocery store availability?'
-        },
-        caresAboutHospitals: {
-            type: GraphQLBoolean,
-            description: 'Does the Buyer care about having Healthcare providers nearby?'
-        },
-        caresAboutCrimeScore: {
-            type: GraphQLBoolean,
-            description: 'Does the Buyer care about the local crime rate?'
-        },
-        caresAboutParks: {
-            type: GraphQLBoolean,
-            description: 'Does the Buyer care about parks and recreation availability?'
-        }
-    })
-});
-
-const propertyPreference = new GraphQLObjectType({
-    name: "property_preference",
-    description: 'The property prefrences for a buyer',
-    fields: () => ({
-        price: {
-            type: GraphQLInt,
-            description: 'The maximum price a buyer is willing to spend'
-        },
-        zipCode: {
-            type: GraphQLInt,
-            description: 'The prefered zipcode for the buyer'
-        },
-        bathrooms: {
-            type: GraphQLInt,
-            description: 'The amount of bathrooms required for the buyer'
-        },
-        bedrooms: {
-            type: GraphQLInt,
-            description: 'The amount of bedrooms required for the buyer'
-        },
-        squareFootage: {
-            type: GraphQLInt,
-            description: 'The minimum amount of square ootage required for the buyer'
-        }
-    })
-});
 
 export const buyerInputType = new GraphQLInputObjectType({
     name: 'BuyerCreateType',

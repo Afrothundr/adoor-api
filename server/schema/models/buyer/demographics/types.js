@@ -1,9 +1,13 @@
-import { GraphQLObjectType, GraphQLInt, GraphQLString } from "graphql";
+import { GraphQLObjectType, GraphQLInt, GraphQLString, GraphQLID } from "graphql";
 
 export const demographics = new GraphQLObjectType({
     name: "demographics",
     description: 'The demographics of the buyer',
     fields: () => ({
+        buyerID: {
+            type: GraphQLID,
+            description: 'ID of parent buyer'
+        },
         income: {
             type: GraphQLInt,
             description: 'upper income of the Buyer'

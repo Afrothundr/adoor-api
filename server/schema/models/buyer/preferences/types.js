@@ -1,28 +1,25 @@
-import { GraphQLObjectType } from "graphql";
+import { GraphQLObjectType, GraphQLID } from "graphql";
+import { propertyPreference } from "./property-preferences/types";
+import { neighboorhoodPreference } from "./neighborhood-preferences/types";
 
-
-export const preference = new GraphQLObjectType({
+export const preferenceType = new GraphQLObjectType({
     name: "preferences",
     description: 'The prefrences for a buyer',
-    fields: () => {
-        const propertyPreference = require('./property-preferences/types');
-        const neighboorhoodPreference = require('./neighborhood-preferences/types');
-        return {
-            id: { type: GraphQLID },
-            propertyPreference: {
-                type: propertyPreference,
-                description: 'Propery preferences for the Buyer',
-                resolve(parent) {
-                    return PropertyPreferences.find({ preferencesID: parent.id });
-                }
-            },
-            neighboorhoodPreference: {
-                type: neighboorhoodPreference,
-                description: 'Neighboorhood preferences for the Buyer',
-                resolve(parent) {
-                    return NeighboorhoodPreferences.find({ preferencesID: parent.id });
-                }
+    fields: () => ({
+        id: { type: GraphQLID },
+        propertyPreference: {
+            type: propertyPreference,
+            description: 'Propery preferences for the Buyer',
+            resolve(parent) {
+                return PropertyPreferences.find({ preferencesID: parent.id });
+            }
+        },
+        neighboorhoodPreference: {
+            type: neighboorhoodPreference,
+            description: 'Neighboorhood preferences for the Buyer',
+            resolve(parent) {
+                return NeighboorhoodPreferences.find({ preferencesID: parent.id });
             }
         }
-    }
+    })
 });

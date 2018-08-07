@@ -1,9 +1,13 @@
-import { GraphQLObjectType, GraphQLInt } from "graphql";
+import { GraphQLObjectType, GraphQLInt, GraphQLID } from "graphql";
 
 export const propertyPreference = new GraphQLObjectType({
     name: "property_preference",
     description: 'The property prefrences for a buyer',
     fields: () => ({
+        preferencesID: {
+            type: GraphQLID,
+            description: 'The id of the parent preferences container'
+        },
         price: {
             type: GraphQLInt,
             description: 'The maximum price a buyer is willing to spend'
