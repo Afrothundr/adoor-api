@@ -1,4 +1,4 @@
-import { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema } from 'graphql';
+import { GraphQLID, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
 import { buyerInputType, buyerType } from "./models/buyer/types";
 
 const Buyer = require('../models/buyer/buyer.model');
@@ -30,7 +30,7 @@ const RootMutation = new GraphQLObjectType({
             args: {
                 input: { type: new GraphQLNonNull(buyerInputType) }
             },
-            resolve: (source, {input}) => {
+            resolve: (parent, { input }) => {
                 const buyer = new Buyer({
                     firstName: input.firstName,
                     lastName: input.lastName,
@@ -43,6 +43,28 @@ const RootMutation = new GraphQLObjectType({
                     favoritedListings: input.favoritedListings
                 });
                 return buyer.save();
+            }
+        },
+        updateBuyer: {
+            type: buyerType,
+            args: {
+                id: { type: GraphQLID },
+                update: { type: buyerInputType }
+            },
+            resolve: (parent, { id, update }) => {
+                const selectedBuyer = Buyer.findById(id);
+                if (!!selectedBuyer) {
+                     selectedBuyer.update(
+                        {
+                            "firstName": update.firstName,
+                            "lastName": update.lastName,
+                            "email": update.email,
+                            "phoneNumber": update.phoneNumber
+                        }, { id: id }, { upsert: true });
+                    return Buyer.findById(id);
+                } else {
+                    throw new Error(`No Record found with an id of ${id}`);
+                }
             }
         }
     }
