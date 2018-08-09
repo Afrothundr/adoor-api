@@ -1,26 +1,22 @@
-import { GraphQLList, GraphQLNonNull, GraphQLString } from 'graphql';
-import { find, findById } from '../../../models/buyer/buyer.model';
-import buyerType from './types';
+import { GraphQLList, GraphQLObjectType, GraphQLID } from 'graphql';
 
-console.log(buyerType);
+const Buyer = require('../../../models/buyer/buyer.model');
 
-export const buyerQueries = {
-    buyer: {
-        type: buyerType,
-        args: {
-            id: {
-                descriptiopn: 'ID of buyer',
-                type: new GraphQLNonNull(GraphQLString)
+export const RootQuery = new GraphQLObjectType({
+    name: 'RootQueryType',
+    fields: () => ({
+        buyer: {
+            type: require('./types').buyerType,
+            args: { id: { type: GraphQLID } },
+            resolve(parent, args) {
+                return Buyer.findById(args.id);
             }
         },
-        resolve: (args) => {
-            return findById(args.id);
+        buyers: {
+            type: new GraphQLList(require('./types').buyerType),
+            resolve() {
+                return Buyer.find({});
+            }
         }
-    },
-    buyers: {
-        type: new GraphQLList(buyerType),
-        resolve: () => {
-            return find({});
-        }
-    }
-};
+    })
+});
