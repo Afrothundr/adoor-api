@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLID } from "graphql";
+import { GraphQLObjectType, GraphQLID, GraphQLString } from "graphql";
 import { propertyPreference } from "./property-preferences/types";
 import { neighboorhoodPreference } from "./neighborhood-preferences/types";
 
@@ -7,6 +7,7 @@ export const preferenceType = new GraphQLObjectType({
     description: 'The prefrences for a buyer',
     fields: () => ({
         id: { type: GraphQLID },
+        buyerID: { type: GraphQLString},
         propertyPreference: {
             type: propertyPreference,
             description: 'Propery preferences for the Buyer',
