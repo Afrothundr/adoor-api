@@ -1,12 +1,20 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
 import { createBuyer, updateBuyer } from './models/buyer/mutations';
-import { RootQuery } from './models/buyer/queries';
+import { buyer, buyers } from './models/buyer/queries';
 
 const RootMutation = new GraphQLObjectType({
     name: 'RootMutation',
     fields: () => ({
         createBuyer: createBuyer,
         updateBuyer: updateBuyer
+    })
+});
+
+const RootQuery = new GraphQLObjectType({
+    name: 'RootQuery',
+    fields: () => ({
+        buyer: buyer,
+        buyers: buyers
     })
 });
 
