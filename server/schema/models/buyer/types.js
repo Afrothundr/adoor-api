@@ -1,13 +1,9 @@
 import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { demographics } from './demographics/types';
-import { neighboorhoodPreference } from './preferences/neighborhood-preferences/types';
-import { propertyPreference } from './preferences/property-preferences/types';
 import { preferenceType } from './preferences/types';
 
 const Demographics = require('../../../models/buyer/demographics.model');
 const Preference = require('../../../models/buyer/preferences.model');
-const PropertyPreferences = require('../../../models/buyer/property-preferences.model');
-const NeighboorhoodPreferences = require('../../../models/buyer/neighborhood-preferences.model');
 
 export const buyerType = new GraphQLObjectType({
     name: "buyer",
