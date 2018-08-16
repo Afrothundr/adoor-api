@@ -2,6 +2,9 @@ import { GraphQLObjectType, GraphQLID, GraphQLString } from "graphql";
 import { propertyPreference } from "./property-preferences/types";
 import { neighboorhoodPreference } from "./neighborhood-preferences/types";
 
+const PropertyPreferences = require('../../../../models/buyer/property-preferences.model');
+const NeighboorhoodPreferences = require('../../../../models/buyer/neighborhood-preferences.model');
+
 export const preferenceType = new GraphQLObjectType({
     name: "preferences",
     description: 'The prefrences for a buyer',

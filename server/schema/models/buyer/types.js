@@ -1,5 +1,5 @@
 import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
-import { demographics } from './demographics/types';
+import { demographicsType } from './demographics/types';
 import { preferenceType } from './preferences/types';
 
 const Demographics = require('../../../models/buyer/demographics.model');
@@ -54,7 +54,7 @@ export const buyerType = new GraphQLObjectType({
             }
         },
         demographics: {
-            type: demographics,
+            type: demographicsType,
             description: 'the demographics of the Buyer',
             resolve(parent) {
                 return Demographics.find({ buyerID: parent.id });

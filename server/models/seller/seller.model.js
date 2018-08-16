@@ -7,7 +7,8 @@ const sellerSchema = new Schema({
     bio : String,
     email : String,
     company : String,
-    profilePicture: String    
+    profilePicture: String,
+    listings: [Schema.Types.ObjectId]  
 });
 
 module.exports = mongoose.model('Seller', sellerSchema);
