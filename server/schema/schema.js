@@ -3,6 +3,8 @@ import { createBuyer, updateBuyer } from './models/buyer/mutations';
 import { buyer, buyers } from './models/buyer/queries';
 import { preferences } from './models/buyer/preferences/queries';
 import { demographics } from './models/buyer/demographics/queries';
+import { seller, sellers } from './models/seller/queries';
+import { listing } from './models/seller/listing/queries';
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
@@ -10,7 +12,12 @@ const RootQuery = new GraphQLObjectType({
         buyer: buyer,
         buyers: buyers,
         preferences: preferences,
-        demographics: demographics
+        demographics: demographics,
+
+        seller: seller,
+        sellers: sellers,
+
+        listing: listing
     })
 });
 

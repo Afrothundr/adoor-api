@@ -1,4 +1,6 @@
 import { GraphQLString, GraphQLID, GraphQLList, GraphQLObjectType } from 'graphql';
+import { listingType } from './listing/types';
+const Listing = require('../../../models/seller/listing.model');
 
 export const sellerType = new GraphQLObjectType({
     name: "seller",
@@ -38,9 +40,11 @@ export const sellerType = new GraphQLObjectType({
             description: 'url of profile picture'
         },
         listings: {
-            type: new GraphQLList(),
+            type: new GraphQLList(listingType),
             description: 'A list of property listings',
-            resolve(parent)
+            resolve(parent) {
+                return Listing.find({ sellerID: parent.id });
+            }
         }
     })
 });
