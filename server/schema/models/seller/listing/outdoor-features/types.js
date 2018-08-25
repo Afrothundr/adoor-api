@@ -1,4 +1,4 @@
-import { GraphQLString, GraphQLID, GraphQLObjectType, GraphQLInt } from 'graphql';
+import { GraphQLString, GraphQLID, GraphQLObjectType } from 'graphql';
 import { GraphQLBoolean } from 'graphql';
 
 
