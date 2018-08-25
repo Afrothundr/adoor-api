@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
+    sellerID: Schema.Types.ObjectId,
     address: String,
     city: String,
     state: String,
@@ -20,7 +21,9 @@ const listingSchema = new Schema({
     cooling: String,
     kitchenType: String,
     laundry: String,
-    fireplace: Boolean
+    fireplace: Boolean,
+    outdoor_features: Schema.Types.ObjectId,
+    neighboorhood: Schema.Types.ObjectId
 });
 
 module.exports = mongoose.model('Listing', listingSchema);
