@@ -1,4 +1,4 @@
-import { GraphQLString, GraphQLID, GraphQLList, GraphQLObjectType } from 'graphql';
+import { GraphQLString, GraphQLID, GraphQLList, GraphQLObjectType, GraphQLInputObjectType } from 'graphql';
 import { listingType } from './listing/types';
 const Listing = require('../../../models/seller/listing.model');
 
@@ -18,6 +18,12 @@ export const sellerType = new GraphQLObjectType({
         bio: {
             type: GraphQLString,
             description: 'Seller information'
+        },
+        phoneNumber: {
+            type: GraphQLString
+        },
+        password: {
+            type: GraphQLString
         },
         email: {
             type: GraphQLString,
@@ -47,4 +53,42 @@ export const sellerType = new GraphQLObjectType({
             }
         }
     })
+});
+
+
+export const sellerInputType = new GraphQLInputObjectType({
+    name: 'SellerCreateType',
+    type: sellerType,
+    fields: {
+        firstName: {
+            type: GraphQLString,
+            description: 'Seller First Name'
+        },
+        lastName: {
+            type: GraphQLString,
+            description: 'Seller Last Name'
+        },
+        bio: {
+            type: GraphQLString,
+            description: 'Seller information'
+        },
+        phoneNumber: {
+            type: GraphQLString
+        },
+        password: {
+            type: GraphQLString
+        },
+        email: {
+            type: GraphQLString,
+            description: 'Seller email'
+        },
+        company: {
+            type: GraphQLString,
+            description: 'company name'
+        },
+        profilePicture: {
+            type: GraphQLString,
+            description: 'url of profile picture'
+        },
+    }
 });

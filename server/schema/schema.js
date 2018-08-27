@@ -5,6 +5,7 @@ import { preferences } from './models/buyer/preferences/queries';
 import { demographics } from './models/buyer/demographics/queries';
 import { seller, sellers } from './models/seller/queries';
 import { listing } from './models/seller/listing/queries';
+import { createSeller } from './models/seller/mutations';
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
@@ -25,7 +26,9 @@ const RootMutation = new GraphQLObjectType({
     name: 'RootMutation',
     fields: () => ({
         createBuyer: createBuyer,
-        updateBuyer: updateBuyer
+        updateBuyer: updateBuyer,
+
+        createSeller: createSeller
     })
 });
 
