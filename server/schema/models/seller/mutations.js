@@ -19,7 +19,22 @@ export const createSeller = {
             company: input.company,
             profilePicture: input.profilePicture
         });
-
         return newSeller.save();
+    }
+}
+
+export const updateSeller = {
+    type: require('./types').sellerType,
+    args: {
+        id: { type: GraphQLID },
+        update: { type: sellerInputType }
+    },
+    resolve: (parent, { id, update }) => {
+        return Seller.findOneAndUpdate({ _id: id }, update, (err, res) => {
+            if (err) {
+                return err;
+            }
+            return res;
+        })
     }
 }
