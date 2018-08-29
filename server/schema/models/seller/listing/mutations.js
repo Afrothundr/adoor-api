@@ -12,7 +12,7 @@ export const createListing = {
     },
     resolve: (parent, {sellerID, listing}) => {
         const newListing = new Listing({
-            sellerID: Seller.findById(sellerID),
+            sellerID: sellerID,
             pictures: listing.pictures,
             description: listing.description,
             address: listing.address,

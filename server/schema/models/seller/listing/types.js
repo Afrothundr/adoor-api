@@ -10,9 +10,11 @@ import {
 } from 'graphql';
 import { outdoorFeaturesType} from './outdoor-features/types';
 import { neighborhoodType } from './neighborhood/types';
+import { sellerType } from '../types';
 
 const Neighboorhood = require('../../../../models/seller/neighborhood.model');
 const OutdoorFeatures = require('../../../../models/seller/outdoor-features.model');
+const Seller = require('../../../../models/seller/seller.model');
 
 export const listingType = new GraphQLObjectType({
     name: "listing",
@@ -20,8 +22,14 @@ export const listingType = new GraphQLObjectType({
     fields: () => ({
         id: { type: GraphQLID },
         sellerID: {
-            type: require('../types').sellerType,
-            description: 'the seller listing the property'
+            type: GraphQLString
+        },
+        seller: {
+            type: sellerType,
+            description: "Seller listing the property",
+            resolve(parent) {
+                return Seller.findById(parent.sellerID);
+            }
         },
         pictures: {
             type: new GraphQLList(GraphQLString),
