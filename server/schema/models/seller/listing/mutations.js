@@ -5,7 +5,7 @@ const Listing = require('../../../../models/seller/listing.model');
 const Seller = require('../../../../models/seller/seller.model');
 
 export const createListing = {
-    type: require('./types').listingType,
+    type: require('../types').sellerType,
     args: {
         sellerID: { type: new GraphQLNonNull(GraphQLID) },
         listing: { type: new GraphQLNonNull(listingInputType)}
@@ -34,6 +34,8 @@ export const createListing = {
             fireplace: listing.fireplace,
             // TODO: add 3rd party api calls to figure out neighboorhood and outdoor features
         });
-        return newListing.save();
+        return newListing.save().then((document) => {
+            return Seller.findByIdAndUpdate(sellerID, {$push:{ listings: document }});
+        });
     }
 }
