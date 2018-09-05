@@ -1,5 +1,6 @@
 import { GraphQLID, GraphQLNonNull } from 'graphql';
 import { buyerInputType } from './types';
+const bcrypt = require('bcrypt');
 
 const Buyer = require('../../../models/buyer/buyer.model');
 
@@ -8,13 +9,13 @@ export const createBuyer = {
     args: {
         input: { type: new GraphQLNonNull(buyerInputType) }
     },
-    resolve: (parent, { input }) => {
+    resolve: async (parent, { input }) => {
         const buyer = new Buyer({
             firstName: input.firstName,
             lastName: input.lastName,
             email: input.email,
             phoneNumber: input.phoneNumber,
-            password: input.password,
+            password: await bcrypt.hash(input.password, 10),
             googleID: input.googleID,
             facebookID: input.facebookID,
             likedListings: input.likedListings,
