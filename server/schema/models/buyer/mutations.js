@@ -40,3 +40,17 @@ export const updateBuyer = {
         })
     }
 }
+
+export const buyerLogin = {
+    type: require('./types').buyerType,
+    args: {
+        email: { type: GraphQLString },
+        password: { type: GraphQLString}
+    },
+    resolve: async (parent, {email, password}) => {
+        const buyer = await Buyer.findOne({email: email});
+        if(!user) {
+            return 'email does not match any records';
+        }
+    }
+}
