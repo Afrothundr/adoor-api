@@ -1,11 +1,11 @@
-import { GraphQLID, GraphQLList } from 'graphql';
+import { GraphQLList } from 'graphql';
 const Seller = require('../../../models/seller/seller.model');
 
 export const seller = {
     type: require('./types').sellerType,
-    args: { id: { type: GraphQLID} },
-    resolve(parent, args) {
-        return Seller.findById(args.id);
+    resolve(_, args, { user }) {
+        if (!user) throw new Error('Not Authenticated!');
+        return Seller.findById(user.id);
     }
 }
 
