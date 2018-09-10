@@ -1,11 +1,11 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
-import { createBuyer, updateBuyer } from './models/buyer/mutations';
+import { createBuyer, updateBuyer, buyerLogin } from './models/buyer/mutations';
 import { buyer, buyers } from './models/buyer/queries';
 import { preferences } from './models/buyer/preferences/queries';
 import { demographics } from './models/buyer/demographics/queries';
 import { seller, sellers } from './models/seller/queries';
 import { listing } from './models/seller/listing/queries';
-import { createSeller, updateSeller } from './models/seller/mutations';
+import { createSeller, updateSeller, sellerLogin } from './models/seller/mutations';
 import { createListing } from './models/seller/listing/mutations';
 
 const RootQuery = new GraphQLObjectType({
@@ -13,6 +13,7 @@ const RootQuery = new GraphQLObjectType({
     fields: () => ({
         buyer: buyer,
         buyers: buyers,
+
         preferences: preferences,
         demographics: demographics,
 
@@ -28,9 +29,11 @@ const RootMutation = new GraphQLObjectType({
     fields: () => ({
         createBuyer: createBuyer,
         updateBuyer: updateBuyer,
+        buyerLogin: buyerLogin,
 
         createSeller: createSeller,
         updateSeller: updateSeller,
+        sellerLogin: sellerLogin,
 
         createListing: createListing
     })

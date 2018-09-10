@@ -1,5 +1,8 @@
-import { GraphQLID, GraphQLNonNull } from 'graphql';
+import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
 import { buyerInputType } from './types';
+const bcrypt = require('bcrypt');
+const jsonwebtoken = require('jsonwebtoken');
+require('dotenv').config();
 
 const Buyer = require('../../../models/buyer/buyer.model');
 
@@ -8,13 +11,13 @@ export const createBuyer = {
     args: {
         input: { type: new GraphQLNonNull(buyerInputType) }
     },
-    resolve: (parent, { input }) => {
+    resolve: async (parent, { input }) => {
         const buyer = new Buyer({
             firstName: input.firstName,
             lastName: input.lastName,
             email: input.email,
             phoneNumber: input.phoneNumber,
-            password: input.password,
+            password: await bcrypt.hash(input.password, 10),
             googleID: input.googleID,
             facebookID: input.facebookID,
             likedListings: input.likedListings,
@@ -37,5 +40,29 @@ export const updateBuyer = {
             }
             return res;
         })
+    }
+}
+
+export const buyerLogin = {
+    type: GraphQLString,
+    args: {
+        email: { type: GraphQLString },
+        password: { type: GraphQLString }
+    },
+    resolve: async (parent, { email, password }) => {
+        const buyer = await Buyer.findOne({ email: email });
+        if (!buyer) {
+            return 'email does not match any records';
+        }
+        const valid = await bcrypt.compare(password, buyer.password)
+        if (!valid) {
+            throw new Error('Incorrect password')
+        }
+
+        return jsonwebtoken.sign(
+            { id: buyer.id, email: buyer.email },
+            process.env.JWT_SECRET,
+            { expiresIn: '1d' }
+        )
     }
 }
