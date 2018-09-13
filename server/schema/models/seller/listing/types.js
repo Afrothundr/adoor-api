@@ -12,6 +12,7 @@ import { outdoorFeaturesType} from './outdoor-features/types';
 import { neighborhoodType } from './neighborhood/types';
 import { sellerType } from '../types';
 
+
 const Neighboorhood = require('../../../../models/seller/neighborhood.model');
 const OutdoorFeatures = require('../../../../models/seller/outdoor-features.model');
 const Seller = require('../../../../models/seller/seller.model');
@@ -47,6 +48,12 @@ export const listingType = new GraphQLObjectType({
             type: GraphQLString
         },
         zipcode: {
+            type: GraphQLInt
+        },
+        latitude: {
+            type: GraphQLInt
+        },
+        longitude: {
             type: GraphQLInt
         },
         bedrooms: {
@@ -159,10 +166,6 @@ export const listingInputType = new GraphQLInputObjectType({
         updated: {
             type: new GraphQLList(GraphQLString),
             description: 'log of when the listing was updated'
-        },
-        views: {
-            type: GraphQLInt,
-            description: 'total number of people who viewed the property'
         },
         yearBuilt: {
             type: new GraphQLNonNull(GraphQLInt)

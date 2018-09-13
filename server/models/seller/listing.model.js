@@ -7,6 +7,8 @@ const listingSchema = new Schema({
     city: String,
     state: String,
     zipcode: Number,
+    latitude: Number,
+    longitude: Number,
     pictures: [String],
     description: String,
     bedrooms: Number,

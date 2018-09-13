@@ -1,5 +1,8 @@
 import { listingInputType } from './types';
 import { GraphQLID, GraphQLNonNull } from 'graphql';
+const axios = require('axios');
+import { listing } from './queries';
+require('dotenv').config();
 
 const Listing = require('../../../../models/seller/listing.model');
 const Seller = require('../../../../models/seller/seller.model');
@@ -7,10 +10,11 @@ const Seller = require('../../../../models/seller/seller.model');
 export const createListing = {
     type: require('../types').sellerType,
     args: {
-        sellerID: { type: new GraphQLNonNull(GraphQLID) },
         listing: { type: new GraphQLNonNull(listingInputType)}
     },
-    resolve: (parent, {sellerID, listing}) => {
+    resolve: async (_, {sellerID, listing}, { user }) => {
+        const location = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${listing.address},+${listing.city},+MO&key=${process.env.googleMaps}`);
+        console.log(location);
         const newListing = new Listing({
             sellerID: sellerID,
             pictures: listing.pictures,
@@ -18,6 +22,8 @@ export const createListing = {
             address: listing.address,
             city: listing.city,
             zipcode: listing.zipcode,
+            latitude: location.data.results[0].geometry.location.latitude,
+            longitude: location.data.results[0].geometry.location.longitude,
             bedrooms: listing.bedrooms,
             bathrooms: listing.bathrooms,
             squareFootage: listing.squareFootage,
@@ -34,8 +40,7 @@ export const createListing = {
             fireplace: listing.fireplace,
             // TODO: add 3rd party api calls to figure out neighboorhood and outdoor features
         });
-        return newListing.save().then((document) => {
-            return Seller.findByIdAndUpdate(sellerID, {$push:{ listings: document }});
-        });
+        await newListing.save()
+        return Seller.findByIdAndUpdate(user.id, {$push:{ listings: newListing }});
     }
 }
