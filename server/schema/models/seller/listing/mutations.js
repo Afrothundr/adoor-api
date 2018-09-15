@@ -13,10 +13,10 @@ export const createListing = {
     args: {
         listing: { type: new GraphQLNonNull(listingInputType) }
     },
-    resolve: async (_, { sellerID, listing }, { user }) => {
+    resolve: async (_, { listing }, { user }) => {
         const location = await geocodeAddress(listing.address, listing.city);
         const newListing = new Listing({
-            sellerID: sellerID,
+            sellerID: user.id,
             pictures: listing.pictures,
             description: listing.description,
             address: listing.address,

@@ -6,7 +6,8 @@ import {
     GraphQLBoolean,
     GraphQLInt,
     GraphQLInputObjectType,
-    GraphQLNonNull
+    GraphQLNonNull,
+    GraphQLFloat
 } from 'graphql';
 import { outdoorFeaturesType} from './outdoor-features/types';
 import { neighborhoodType } from './neighborhood/types';
@@ -51,10 +52,10 @@ export const listingType = new GraphQLObjectType({
             type: GraphQLInt
         },
         latitude: {
-            type: GraphQLInt
+            type: GraphQLFloat
         },
         longitude: {
-            type: GraphQLInt
+            type: GraphQLFloat
         },
         bedrooms: {
             type: GraphQLInt,
