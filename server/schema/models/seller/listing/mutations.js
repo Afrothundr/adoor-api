@@ -1,7 +1,8 @@
 import { listingInputType } from './types';
 import { GraphQLID, GraphQLNonNull } from 'graphql';
-const axios = require('axios');
+
 import { listing } from './queries';
+import { geocodeAddress } from './resolvers';
 require('dotenv').config();
 
 const Listing = require('../../../../models/seller/listing.model');
@@ -10,11 +11,10 @@ const Seller = require('../../../../models/seller/seller.model');
 export const createListing = {
     type: require('../types').sellerType,
     args: {
-        listing: { type: new GraphQLNonNull(listingInputType)}
+        listing: { type: new GraphQLNonNull(listingInputType) }
     },
-    resolve: async (_, {sellerID, listing}, { user }) => {
-        const location = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${listing.address},+${listing.city},+MO&key=${process.env.googleMaps}`);
-        console.log(location);
+    resolve: async (_, { sellerID, listing }, { user }) => {
+        const location = await geocodeAddress(listing.address, listing.city);
         const newListing = new Listing({
             sellerID: sellerID,
             pictures: listing.pictures,
@@ -22,8 +22,8 @@ export const createListing = {
             address: listing.address,
             city: listing.city,
             zipcode: listing.zipcode,
-            latitude: location.data.results[0].geometry.location.latitude,
-            longitude: location.data.results[0].geometry.location.longitude,
+            latitude: location.latitude,
+            longitude: location.longitude,
             bedrooms: listing.bedrooms,
             bathrooms: listing.bathrooms,
             squareFootage: listing.squareFootage,
@@ -40,7 +40,7 @@ export const createListing = {
             fireplace: listing.fireplace,
             // TODO: add 3rd party api calls to figure out neighboorhood and outdoor features
         });
-        await newListing.save()
-        return Seller.findByIdAndUpdate(user.id, {$push:{ listings: newListing }});
+        newListing.save()
+        return Seller.findByIdAndUpdate(user.id, { $push: { listings: newListing } });
     }
 }
