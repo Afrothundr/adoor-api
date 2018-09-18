@@ -2,7 +2,7 @@ import { listingInputType } from './types';
 import { GraphQLID, GraphQLNonNull } from 'graphql';
 
 import { listing } from './queries';
-import { geocodeAddress } from './resolvers';
+import { geocodeAddress, saveNeighborhoodScores } from './resolvers';
 require('dotenv').config();
 
 const Listing = require('../../../../models/seller/listing.model');
@@ -40,7 +40,12 @@ export const createListing = {
             fireplace: listing.fireplace,
             // TODO: add 3rd party api calls to figure out neighboorhood and outdoor features
         });
-        newListing.save()
+        let savedListing;
+        await newListing.save().then((document) => {
+            savedListing = document;
+        });
+        console.log(savedListing);
+        saveNeighborhoodScores(savedListing);
         return Seller.findByIdAndUpdate(user.id, { $push: { listings: newListing } });
     }
 }
