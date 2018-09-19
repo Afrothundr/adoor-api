@@ -14,7 +14,7 @@ import { neighborhoodType } from './neighborhood/types';
 import { sellerType } from '../types';
 
 
-const Neighboorhood = require('../../../../models/seller/neighborhood.model');
+const Neighborhood = require('../../../../models/seller/neighborhood.model');
 const OutdoorFeatures = require('../../../../models/seller/outdoor-features.model');
 const Seller = require('../../../../models/seller/seller.model');
 
@@ -108,11 +108,11 @@ export const listingType = new GraphQLObjectType({
             type: GraphQLBoolean,
             description: 'does property have fireplace'
         },
-        neighboorhood: {
+        neighborhood: {
             type: neighborhoodType,
-            description: 'neighboorhood of listing',
+            description: 'neighborhood of listing',
             resolve(parent) {
-                return Neighboorhood.find({ listingID: parent.id });
+                return Neighborhood.find({ listingID: parent.id });
             }
         },
         outdoorFeatures: {

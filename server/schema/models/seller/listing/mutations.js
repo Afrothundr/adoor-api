@@ -38,14 +38,17 @@ export const createListing = {
             kitchenType: listing.kitchenType,
             laundry: listing.laundry,
             fireplace: listing.fireplace,
-            // TODO: add 3rd party api calls to figure out neighboorhood and outdoor features
+            neighborhood: null,
         });
-        let savedListing;
-        await newListing.save().then((document) => {
-            savedListing = document;
+        await newListing.save().then( async (document) => {
+          const savedListing = document;
+          console.log(document);
+          const neighborhoodDocument = await saveNeighborhoodScores(savedListing);
+          console.log(neighborhoodDocument);
+          Listing.findByIdAndUpdate(savedListing._id, {$set: {neighborhood: neighborhoodDocument._id}}).then(res => {
+              console.log(`listing res ${res}`);
+          })
         });
-        console.log(savedListing);
-        saveNeighborhoodScores(savedListing);
         return Seller.findByIdAndUpdate(user.id, { $push: { listings: newListing } });
     }
 }

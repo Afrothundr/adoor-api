@@ -17,31 +17,32 @@ export async function geocodeAddress(address, city) {
 }
 
 export async function saveNeighborhoodScores(listing) {
-    const scores = await getNeighboorhoodScores(listing);
-    console.log(scores);
-    const neighboorhoodScores = new Neighborhood ({
+    const scores = await getNeighborhoodScores(listing);
+    const neighborhoodScores = new Neighborhood ({
         listingID: listing.id,
-        parks: scores.parks.results.length,
-        groceryStores: scores.groceryStores.results.length,
-        hospitals: scores.hospitals.results.length,
+        parks: scores.parks.data.results.length,
+        groceryStores: scores.groceryStores.data.results.length,
+        hospitals: scores.hospitals.data.results.length,
         //schoolChoice: scores.schools.data.schools.school.length
     });
-    console.log(neighboorhoodScores);
-    neighboorhoodScores.save();
+    let savedNeighborhooodDocument;
+    await neighborhoodScores.save().then(document => {
+        savedNeighborhooodDocument = document;
+    });
+    return savedNeighborhooodDocument;
 }
 
-async function getNeighboorhoodScores(listing) {
+async function getNeighborhoodScores(listing) {
     const parks = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${listing.latitude},${listing.longitude}&radius=6000&types=park&key=${process.env.googleAPI}`);
     const groceryStores = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${listing.latitude},${listing.longitude}&radius=6000&types=supermarket&key=${process.env.googleAPI}`);
     const hospitals = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${listing.latitude},${listing.longitude}&radius=6000&types=hospital&key=${process.env.googleAPI}`);
     //const schools = await axios.get(`https://api.greatschools.org/schools/nearby?key=${process.env.greatSchools}&state=MO&lat=${listing.latitude}&lon=${listing.longitude}`);
-    const results = new Neighborhood ({
+    const results = {
         parks: parks,
         groceryStores: groceryStores,
         hospitals: hospitals,
         //schoolChoice: schools
-    });
-    console.log(results);
+    };
     return results
 }
 

@@ -25,7 +25,7 @@ const listingSchema = new Schema({
     laundry: String,
     fireplace: Boolean,
     outdoor_features: Schema.Types.ObjectId,
-    neighboorhood: Schema.Types.ObjectId
+    neighborhood: Schema.Types.ObjectId
 });
 
 module.exports = mongoose.model('Listing', listingSchema);
