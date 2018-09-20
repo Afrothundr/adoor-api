@@ -112,14 +112,14 @@ export const listingType = new GraphQLObjectType({
             type: neighborhoodType,
             description: 'neighborhood of listing',
             resolve(parent) {
-                return Neighborhood.find({ listingID: parent.id });
+                return Neighborhood.findOne({ listingID: parent.id });
             }
         },
         outdoorFeatures: {
             type: outdoorFeaturesType,
             description: 'outdoorFeatures of listing',
             resolve(parent) {
-                return OutdoorFeatures.find({ listingID: parent.id });
+                return OutdoorFeatures.findOne({ listingID: parent.id });
             }
         }
     })

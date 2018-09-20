@@ -20,9 +20,9 @@ export async function saveNeighborhoodScores(listing) {
     const scores = await getNeighborhoodScores(listing);
     const neighborhoodScores = new Neighborhood ({
         listingID: listing.id,
-        parks: scores.parks.data.results.length,
-        groceryStores: scores.groceryStores.data.results.length,
-        hospitals: scores.hospitals.data.results.length,
+        parks: scores.parks.data.results.length | 0,
+        groceryStores: scores.groceryStores.data.results.length | 0,
+        hospitals: scores.hospitals.data.results.length | 0,
         //schoolChoice: scores.schools.data.schools.school.length
     });
     let savedNeighborhooodDocument;
@@ -45,32 +45,3 @@ async function getNeighborhoodScores(listing) {
     };
     return results
 }
-
-// listingID: Schema.Types.ObjectId,
-// schoolChoice : Number,
-// groceryStores : Number,
-// hospitals : Number,
-// crimeScore : Number,
-// parks : Number    
-
-// axios.get(`${proxy}https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${listing.latitude},${listing.longitude}&radius=6000&types=park&key=${Keys.googleMaps}`)
-// .then(res => {
-//   lifestyle.parksCount += res.data.results.length;
-//   axios.get(`${proxy}https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${listing.latitude},${listing.longitude}&radius=6000&types=supermarket&key=${Keys.googleMaps}`)
-//     .then(res => {
-//       lifestyle.groceryStoresCount += res.data.results.length;
-//       axios.get(`${proxy}https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${listing.latitude},${listing.longitude}&radius=6000&types=hospital&key=${Keys.googleMaps}`)
-//         .then(res => {
-//           lifestyle.hospitalsCount += res.data.results.length;
-//           axios.get(`/api/crimedata/${listing.zipcode}`)
-//             .then(res => {
-//               lifestyle.crimesCount += res.data.length;
-//               axios.get(`${proxy}https://api.greatschools.org/schools/nearby?key=${Keys.greatSchools}&state=MO&lat=${listing.latitude}&lon=${listing.longitude}`)
-//                 .then(res => {
-//                   lifestyle.schoolsCount += res.data.schools.school.length;
-//                   saveCommunityData(lifestyle);
-//                 })
-//             })
-//         })
-//     })
-// })
