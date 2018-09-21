@@ -6,13 +6,15 @@ import {
     GraphQLBoolean,
     GraphQLInt,
     GraphQLInputObjectType,
-    GraphQLNonNull
+    GraphQLNonNull,
+    GraphQLFloat
 } from 'graphql';
 import { outdoorFeaturesType} from './outdoor-features/types';
 import { neighborhoodType } from './neighborhood/types';
 import { sellerType } from '../types';
 
-const Neighboorhood = require('../../../../models/seller/neighborhood.model');
+
+const Neighborhood = require('../../../../models/seller/neighborhood.model');
 const OutdoorFeatures = require('../../../../models/seller/outdoor-features.model');
 const Seller = require('../../../../models/seller/seller.model');
 
@@ -48,6 +50,12 @@ export const listingType = new GraphQLObjectType({
         },
         zipcode: {
             type: GraphQLInt
+        },
+        latitude: {
+            type: GraphQLFloat
+        },
+        longitude: {
+            type: GraphQLFloat
         },
         bedrooms: {
             type: GraphQLInt,
@@ -100,18 +108,18 @@ export const listingType = new GraphQLObjectType({
             type: GraphQLBoolean,
             description: 'does property have fireplace'
         },
-        neighboorhood: {
+        neighborhood: {
             type: neighborhoodType,
-            description: 'neighboorhood of listing',
+            description: 'neighborhood of listing',
             resolve(parent) {
-                return Neighboorhood.find({ listingID: parent.id });
+                return Neighborhood.findOne({ listingID: parent.id });
             }
         },
         outdoorFeatures: {
             type: outdoorFeaturesType,
             description: 'outdoorFeatures of listing',
             resolve(parent) {
-                return OutdoorFeatures.find({ listingID: parent.id });
+                return OutdoorFeatures.findOne({ listingID: parent.id });
             }
         }
     })
@@ -159,10 +167,6 @@ export const listingInputType = new GraphQLInputObjectType({
         updated: {
             type: new GraphQLList(GraphQLString),
             description: 'log of when the listing was updated'
-        },
-        views: {
-            type: GraphQLInt,
-            description: 'total number of people who viewed the property'
         },
         yearBuilt: {
             type: new GraphQLNonNull(GraphQLInt)

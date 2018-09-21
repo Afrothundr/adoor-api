@@ -7,6 +7,8 @@ const listingSchema = new Schema({
     city: String,
     state: String,
     zipcode: Number,
+    latitude: Number,
+    longitude: Number,
     pictures: [String],
     description: String,
     bedrooms: Number,
@@ -23,7 +25,7 @@ const listingSchema = new Schema({
     laundry: String,
     fireplace: Boolean,
     outdoor_features: Schema.Types.ObjectId,
-    neighboorhood: Schema.Types.ObjectId
+    neighborhood: Schema.Types.ObjectId
 });
 
 module.exports = mongoose.model('Listing', listingSchema);
