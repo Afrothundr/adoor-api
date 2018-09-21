@@ -42,12 +42,8 @@ export const createListing = {
         });
         await newListing.save().then( async (document) => {
           const savedListing = document;
-          console.log(document);
           const neighborhoodDocument = await saveNeighborhoodScores(savedListing);
-          console.log(neighborhoodDocument);
-          Listing.findByIdAndUpdate(savedListing._id, {$set: {neighborhood: neighborhoodDocument._id}}).then(res => {
-              console.log(`listing res ${res}`);
-          })
+          Listing.findByIdAndUpdate(savedListing._id, {$set: {neighborhood: neighborhoodDocument._id}});
         });
         return Seller.findByIdAndUpdate(user.id, { $push: { listings: newListing } });
     }
