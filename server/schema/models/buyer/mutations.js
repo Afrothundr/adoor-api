@@ -1,5 +1,7 @@
 import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
-import { buyerInputType } from './types';
+import { buyerInputType, buyerType } from './types';
+import { neighboorhoodPreferenceInput } from './preferences/neighborhood-preferences/types';
+import { propertyPreferenceInput } from './preferences/property-preferences/types';
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
 require('dotenv').config();
@@ -64,5 +66,16 @@ export const buyerLogin = {
             process.env.JWT_SECRET,
             { expiresIn: '1d' }
         )
+    }
+}
+
+export const savePreferences = {
+    type: buyerType,
+    args: {
+        neighborhoodPreferences: neighboorhoodPreferenceInput,
+        properyPreferences: propertyPreferenceInput
+    },
+    resolve: async (_, { neighborhoodPreferences, properyPreferences}, {user}) => {
+        
     }
 }

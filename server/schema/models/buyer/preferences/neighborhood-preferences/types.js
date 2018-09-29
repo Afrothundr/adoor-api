@@ -1,4 +1,4 @@
-import { GraphQLObjectType, GraphQLBoolean, GraphQLID } from "graphql";
+import { GraphQLObjectType, GraphQLBoolean, GraphQLID, GraphQLInputObjectType, GraphQLString, GraphQLInt } from "graphql";
 
 export const neighboorhoodPreference = new GraphQLObjectType({
     name: "neighborhood_preference",
@@ -29,4 +29,24 @@ export const neighboorhoodPreference = new GraphQLObjectType({
             description: 'Does the Buyer care about parks and recreation availability?'
         }
     })
+});
+
+export const neighboorhoodPreferenceInput = new GraphQLInputObjectType({
+    name: "neighborhood_preference_",
+    kids: {
+        type: GraphQLBoolean,
+        description: 'Does the person have kids?'
+    },
+    ageOfKids: {
+        type: GraphQLInt,
+        description: 'age of youngest child'
+    },
+    livesAlone: {
+        type: GraphQLBoolean,
+        description: 'Do they like to live alone?'
+    },
+    pets: {
+        type: GraphQLString,
+        description: 'Type of pet'
+    }
 });

@@ -16,6 +16,7 @@ export async function geocodeAddress(address, city) {
 
 export async function saveNeighborhoodScores(listing) {
     const scores = await getNeighborhoodScores(listing);
+    console.log(scores);
     const neighborhoodScores = new Neighborhood ({
         listingID: listing.id,
         parks: scores.parks.data.results.length | 0,
@@ -32,9 +33,9 @@ export async function saveNeighborhoodScores(listing) {
 }
 
 async function getNeighborhoodScores(listing) {
-    const parks = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${listing.latitude},${listing.longitude}&radius=6000&types=park&key=${process.env.googleAPI}`);
-    const groceryStores = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${listing.latitude},${listing.longitude}&radius=6000&types=supermarket&key=${process.env.googleAPI}`);
-    const hospitals = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${listing.latitude},${listing.longitude}&radius=6000&types=hospital&key=${process.env.googleAPI}`);
+    const parks = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${listing.latitude},${listing.longitude}&radius=1000&types=park&key=${process.env.googleAPI}`);
+    const groceryStores = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${listing.latitude},${listing.longitude}&radius=1000&types=supermarket&key=${process.env.googleAPI}`);
+    const hospitals = await axios.get(`https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${listing.latitude},${listing.longitude}&radius=1000&types=hospital&key=${process.env.googleAPI}`);
     const crimes = await axios.get(`https://data.kcmo.org/resource/wy8a-bydn.json?zip_code=${listing.zipcode}&$$app_token=${process.env.KCOpenData}`)
     //const schools = await axios.get(`https://api.greatschools.org/schools/nearby?key=${process.env.greatSchools}&state=MO&lat=${listing.latitude}&lon=${listing.longitude}`);
     const results = {
