@@ -7,7 +7,9 @@ const neighborhoodSchema = new Schema({
     groceryRank : Number,
     hospitalRank : Number,
     crimeRank : Number,
-    parksRank : Number     
+    parksRank : Number,
+    gymRank: Number,
+    entertainmentRank: Number
 });
 
 module.exports = mongoose.model('Neighborhood', neighborhoodSchema);

@@ -16,10 +16,12 @@ export async function saveNeighborhoodScores(listing) {
     const neighborhoodScores = new Neighborhood ({
         listingID: listing.id,
         parksRank: calculateParksRank(results.parks.data.results.length) | 0,
-        groceryRank: results.groceryStores.data.results.length | 0,
+        groceryRank: calculateGroceryRank(results.groceryStores.data.results.length) | 0,
         hospitalRank: calculateHospitalRank(results.hospitals.data.results.length) | 0,
         crimeRank: calculateCrimeRank(results.crimes.data.length) | 0,
-        schoolRank: calculateSchoolRank(parseFloat(results.graduationRates.data[0].value)) | 0
+        schoolRank: calculateSchoolRank(parseFloat(results.graduationRates.data[0].value)) | 0,
+        gymRank: calculateGymRank(results.gyms.data.results.length) | 0,
+        entertainmentRank: calculateEntertainmentRank(results.entertainment.data.results.length) | 0
     });
     let savedNeighborhooodDocument;
     await neighborhoodScores.save().then(document => {
@@ -31,10 +33,12 @@ export async function saveNeighborhoodScores(listing) {
 async function getNeighborhoodScores(listing) {
     return {
         parks: await axios.get(`${process.env.googleBaseURL}location=${listing.latitude},${listing.longitude}&radius=50000&types=park&key=${process.env.googleAPI}`),
-        groceryStores: await axios.get(`${process.env.googleBaseURL}location=${listing.latitude},${listing.longitude}&radius=5000&types=supermarket&key=${process.env.googleAPI}`),
-        hospitals: await axios.get(`${process.env.googleBaseURL}location=${listing.latitude},${listing.longitude}&radius=5000&types=hospital&key=${process.env.googleAPI}`),
+        groceryStores: await axios.get(`${process.env.googleBaseURL}location=${listing.latitude},${listing.longitude}&radius=50000&types=supermarket&key=${process.env.googleAPI}`),
+        hospitals: await axios.get(`${process.env.googleBaseURL}location=${listing.latitude},${listing.longitude}&radius=50000&types=hospital&key=${process.env.googleAPI}`),
         crimes: await axios.get(`${process.env.kcmoBaseURL}zip_code=${listing.zipcode}&$$app_token=${process.env.KCOpenData}`),
-        graduationRates: await axios.get(`${process.env.openDataBaseURL}variable=percent_high_school_graduate_or_higher&id=8600000US${listing.zipcode}&$$app_token=${process.env.KCOpenData}`)
+        graduationRates: await axios.get(`${process.env.openDataBaseURL}variable=percent_high_school_graduate_or_higher&id=8600000US${listing.zipcode}&$$app_token=${process.env.KCOpenData}`),
+        gyms: await axios.get(`${process.env.googleBaseURL}location=${listing.latitude},${listing.longitude}&radius=50000&types=gym&key=${process.env.googleAPI}`),
+        entertainment: await axios.get(`${process.env.googleBaseURL}location=${listing.latitude},${listing.longitude}&radius=50000&types=bar&key=${process.env.googleAPI}`),
     };
 }
 
@@ -76,10 +80,28 @@ function calculateHospitalRank(numHospitals) {
 
 function calculateGroceryRank(numGroceryStores) {
     if (numGroceryStores == NaN) return null;
-    if (numGroceryStores >= 25) return 5;
-    if (numGroceryStores >= 20 && numGroceryStores < 25) return 4;
-    if (numGroceryStores >= 15 && numGroceryStores < 20) return 3;
-    if (numGroceryStores >= 10 && numGroceryStores < 15) return 2;
-    if (numGroceryStores < 5) return 1;
+    if (numGroceryStores >= 21.6) return 5;
+    if (numGroceryStores >= 19.6 && numGroceryStores < 21.6) return 4;
+    if (numGroceryStores >= 16.6 && numGroceryStores < 19.6) return 3;
+    if (numGroceryStores >= 13.6 && numGroceryStores < 16.6) return 2;
+    if (numGroceryStores < 13.6) return 1;
+}
+
+function calculateGymRank(gyms) {
+    if (gyms == NaN) return null;
+    if (gyms >= 10) return 5;
+    if (gyms >= 8 && gyms < 10) return 4;
+    if (gyms >= 6 && gyms < 8) return 3;
+    if (gyms >= 4 && gyms < 6) return 2;
+    if (gyms < 2) return 1;
+}
+
+function calculateEntertainmentRank(bars) {
+    if (bars == NaN) return null;
+    if (bars >= 10) return 5;
+    if (bars >= 8 && bars < 10) return 4;
+    if (bars >= 6 && bars < 8) return 3;
+    if (bars >= 4 && bars < 6) return 2;
+    if (bars < 2) return 1;
 }
 

@@ -28,6 +28,15 @@ export const neighborhoodType = new GraphQLObjectType({
         parksRank: {
             type: GraphQLInt,
             description: 'Number of parks in the area'
+        },
+        gymRank: {
+            type: GraphQLInt,
+            description: 'Number of parks in the area'
+        },
+        entertainmentRank: {
+            type: GraphQLInt,
+            description: 'Number of parks in the area'
         }
+
     })
 });
