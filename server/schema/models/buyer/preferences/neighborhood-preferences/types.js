@@ -1,52 +1,51 @@
 import { GraphQLObjectType, GraphQLBoolean, GraphQLID, GraphQLInputObjectType, GraphQLString, GraphQLInt } from "graphql";
 
-export const neighboorhoodPreference = new GraphQLObjectType({
+export const neighborhoodPreference = new GraphQLObjectType({
     name: "neighborhood_preference",
-    description: 'The neighboorhood prefrences for a buyer',
+    description: 'The neighborhood prefrences for a buyer',
     fields: () => ({
         preferencesID: {
             type: GraphQLID,
             description: 'The id of the parent preferences container'
         },
-        caresAboutSchoolChoice: {
+        hasYoungKids: {
             type: GraphQLBoolean,
-            description: 'Does the Buyer care about local school scores?'
+            description: 'Does the Buyer have young kids?'
         },
-        caresAboutGroceryStores: {
+        livesAlone: {
             type: GraphQLBoolean,
-            description: 'Does the Buyer care about grocery store availability?'
+            description: 'Does the Buyer live alone?'
         },
-        caresAboutHospitals: {
+        hasPets: {
             type: GraphQLBoolean,
-            description: 'Does the Buyer care about having Healthcare providers nearby?'
+            description: 'Does the Buyer have large pets?'
         },
-        caresAboutCrimeScore: {
+        exercises: {
             type: GraphQLBoolean,
-            description: 'Does the Buyer care about the local crime rate?'
-        },
-        caresAboutParks: {
-            type: GraphQLBoolean,
-            description: 'Does the Buyer care about parks and recreation availability?'
+            description: 'Does the Buyer like to excercie?'
         }
     })
 });
 
-export const neighboorhoodPreferenceInput = new GraphQLInputObjectType({
+export const neighborhoodPreferenceInput = new GraphQLInputObjectType({
     name: "neighborhood_preference_",
-    kids: {
-        type: GraphQLBoolean,
-        description: 'Does the person have kids?'
-    },
-    ageOfKids: {
-        type: GraphQLInt,
-        description: 'age of youngest child'
-    },
-    livesAlone: {
-        type: GraphQLBoolean,
-        description: 'Do they like to live alone?'
-    },
-    pets: {
-        type: GraphQLString,
-        description: 'Type of pet'
+    type: neighborhoodPreference,
+    fields: {
+        hasYoungKids: {
+            type: GraphQLBoolean,
+            description: 'Does the Buyer have young kids?'
+        },
+        livesAlone: {
+            type: GraphQLBoolean,
+            description: 'Does the Buyer live alone?'
+        },
+        hasPets: {
+            type: GraphQLBoolean,
+            description: 'Does the Buyer have large pets?'
+        },
+        exercises: {
+            type: GraphQLBoolean,
+            description: 'Does the Buyer like to excercie?'
+        }
     }
 });

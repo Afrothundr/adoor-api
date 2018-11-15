@@ -3,11 +3,10 @@ const Schema = mongoose.Schema;
 
 const neighborhoodPreferenceSchema = new Schema({
     preferencesID: String,
-    caresAboutSchoolChoice : Boolean,
-    caresAboutGroceryStores : Boolean,
-    caresAboutHospitals : Boolean,
-    caresAboutCrimeScore : Boolean,
-    caresAboutParks : Boolean
+    hasYoungKids : Boolean,
+    livesAlone : Boolean,
+    hasPets : Boolean,
+    exercises : Boolean,
 });
 
 module.exports = mongoose.model('Neighborhood-Preference', neighborhoodPreferenceSchema);

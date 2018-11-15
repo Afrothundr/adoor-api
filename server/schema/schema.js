@@ -1,5 +1,5 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
-import { createBuyer, updateBuyer, buyerLogin } from './models/buyer/mutations';
+import { createBuyer, updateBuyer, buyerLogin, savePreferences } from './models/buyer/mutations';
 import { buyer, buyers } from './models/buyer/queries';
 import { preferences } from './models/buyer/preferences/queries';
 import { demographics } from './models/buyer/demographics/queries';
@@ -30,6 +30,7 @@ const RootMutation = new GraphQLObjectType({
         createBuyer: createBuyer,
         updateBuyer: updateBuyer,
         buyerLogin: buyerLogin,
+        savePreferences: savePreferences,
 
         createSeller: createSeller,
         updateSeller: updateSeller,
