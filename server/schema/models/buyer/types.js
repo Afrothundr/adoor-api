@@ -1,9 +1,12 @@
 import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { demographicsType } from './demographics/types';
 import { preferenceType } from './preferences/types';
+import { listingType } from '../seller/listing/types';
+
 
 const Demographics = require('../../../models/buyer/demographics.model');
 const Preference = require('../../../models/buyer/preferences.model');
+const Listing = require('../../../models/seller/listing.model');
 
 export const buyerType = new GraphQLObjectType({
     name: "buyer",
@@ -58,6 +61,20 @@ export const buyerType = new GraphQLObjectType({
             description: 'the demographics of the Buyer',
             resolve(parent) {
                 return Demographics.find({ buyerID: parent.id });
+            }
+        },
+        matches: {
+            type: new GraphQLList(listingType),
+            description: 'A list of property listings',
+            resolve(parent) {
+                return Listing.find({_id: {$in: parent.matches}});
+            }
+        },
+        favoriteMatches: {
+            type: new GraphQLList(listingType),
+            description: 'A list of property listings',
+            resolve(parent) {
+                return Listing.find({records: {$in: parent.matches}});
             }
         }
     })

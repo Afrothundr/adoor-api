@@ -97,3 +97,18 @@ export const savePreferences = {
             });
     }
 }
+
+export const saveMatch = {
+    type: buyerType,
+    args: {
+         listingId: { type: GraphQLID }
+    },
+    resolve: async (_, { listingId }, { user }) => {
+        return Buyer
+            .findByIdAndUpdate(user.id, {
+                $push: {
+                    matches: listingId
+                }
+        });
+    }
+}
