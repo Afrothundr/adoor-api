@@ -112,3 +112,19 @@ export const saveMatch = {
         });
     }
 }
+
+export const deleteMatch = {
+    type: buyerType,
+    args: {
+         listingId: { type: GraphQLID }
+    },
+    resolve: async (_, { listingId }, { user }) => {
+
+        return Buyer
+            .findByIdAndUpdate(user.id, {
+                $pull: {
+                    matches: listingId
+                }
+        });
+    }
+}
