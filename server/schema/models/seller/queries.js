@@ -1,7 +1,7 @@
 import { GraphQLList } from 'graphql';
 const Seller = require('../../../models/seller/seller.model');
 
-export const seller = {
+const seller = {
     type: require('./types').sellerType,
     resolve(_, args, { user }) {
         if (!user) throw new Error('Not Authenticated!');
@@ -9,9 +9,14 @@ export const seller = {
     }
 }
 
-export const sellers = {
+const sellers = {
     type: new GraphQLList(require('./types').sellerType),
     resolve() {
         return Seller.find({});
     }
+}
+
+export const sellerQueries = {
+    seller: seller,
+    sellers: sellers
 }

@@ -8,7 +8,7 @@ require('dotenv').config();
 const Listing = require('../../../../models/seller/listing.model');
 const Seller = require('../../../../models/seller/seller.model');
 
-export const createListing = {
+const createListing = {
     type: require('../types').sellerType,
     args: {
         listing: { type: new GraphQLNonNull(listingInputType) }
@@ -47,4 +47,8 @@ export const createListing = {
         });
         return Seller.findByIdAndUpdate(user.id, { $push: { listings: newListing } });
     }
+}
+
+export const listingMutations = {
+    createListing: createListing
 }

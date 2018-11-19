@@ -9,7 +9,10 @@ const buyerSchema = new Schema({
     password: String,
     googleID: String,
     facebookID: String,
-    preferences:  Schema.Types.ObjectId
+    preferences: Schema.Types.ObjectId,
+    matches: [ Schema.Types.ObjectId ],
+    favoriteMatches: [ Schema.Types.ObjectId ],
+    demographics: Schema.Types.ObjectId
 });
 
 module.exports = mongoose.model('Buyer', buyerSchema);

@@ -2,7 +2,7 @@ import { GraphQLID } from 'graphql';
 
 const Demographics = require('../../../../models/buyer/demographics.model');
 
-export const demographics = {
+const demographics = {
     type: require('./types').demographicsType,
     args: { buyerID: { type: GraphQLID } },
     resolve(parent, {buyerID}) {
@@ -11,4 +11,8 @@ export const demographics = {
             return res;
         });
     }
+}
+
+export const demographicsQueries = {
+    demographics: demographics
 }

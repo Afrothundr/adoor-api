@@ -1,9 +1,12 @@
 import { GraphQLID, GraphQLInputObjectType, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import { demographicsType } from './demographics/types';
 import { preferenceType } from './preferences/types';
+import { listingType } from '../seller/listing/types';
+
 
 const Demographics = require('../../../models/buyer/demographics.model');
 const Preference = require('../../../models/buyer/preferences.model');
+const Listing = require('../../../models/seller/listing.model');
 
 export const buyerType = new GraphQLObjectType({
     name: "buyer",
@@ -38,14 +41,6 @@ export const buyerType = new GraphQLObjectType({
             type: GraphQLString,
             description: 'Facebook ID'
         },
-        likedListings: {
-            type: new GraphQLList(GraphQLString),
-            description: 'A list of matched listings'
-        },
-        favoritedListings: {
-            type: new GraphQLList(GraphQLString),
-            description: 'A list of favorited matched listings'
-        },
         preferences: {
             type: preferenceType,
             description: 'the preferences of the Buyer',
@@ -58,6 +53,20 @@ export const buyerType = new GraphQLObjectType({
             description: 'the demographics of the Buyer',
             resolve(parent) {
                 return Demographics.find({ buyerID: parent.id });
+            }
+        },
+        matches: {
+            type: new GraphQLList(listingType),
+            description: 'A list of matched listings',
+            resolve(parent) {
+                return Listing.find({_id: {$in: parent.matches}});
+            }
+        },
+        favoriteMatches: {
+            type: new GraphQLList(listingType),
+            description: 'A list of favorited matched listings',
+            resolve(parent) {
+                return Listing.find({_id: {$in: parent.favoriteMatches}});
             }
         }
     })
@@ -96,14 +105,6 @@ export const buyerInputType = new GraphQLInputObjectType({
         facebookID: {
             description: 'Google OAuth Token',
             type: GraphQLString
-        },
-        likedListings: {
-            description: 'List of matched listings',
-            type: new GraphQLNonNull(new GraphQLList(GraphQLString))
-        },
-        favoritedListings: {
-            description: 'List of favorited listings',
-            type: new GraphQLNonNull(new GraphQLList(GraphQLString))
         }
     }
 });
