@@ -1,44 +1,30 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
-import { createBuyer, updateBuyer, buyerLogin, savePreferences, saveMatch, deleteMatch } from './models/buyer/mutations';
-import { buyer, buyers } from './models/buyer/queries';
-import { preferences } from './models/buyer/preferences/queries';
-import { demographics } from './models/buyer/demographics/queries';
-import { seller, sellers } from './models/seller/queries';
-import { listing } from './models/seller/listing/queries';
-import { createSeller, updateSeller, sellerLogin } from './models/seller/mutations';
-import { createListing } from './models/seller/listing/mutations';
+import { demographicsQueries } from './models/buyer/demographics/queries';
+import { buyerMutations } from './models/buyer/mutations';
+import { preferencesQueries } from './models/buyer/preferences/queries';
+import { buyerQueries } from './models/buyer/queries';
+import { listingMutations } from './models/seller/listing/mutations';
+import { listingQueries } from './models/seller/listing/queries';
+import { sellerMutations } from './models/seller/mutations';
+import { sellerQueries } from './models/seller/queries';
 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
     fields: () => ({
-        buyer: buyer,
-        buyers: buyers,
-
-        preferences: preferences,
-        demographics: demographics,
-
-        seller: seller,
-        sellers: sellers,
-
-        listing: listing
+        ...buyerQueries,
+        ...preferencesQueries,
+        ...demographicsQueries,
+        ...sellerQueries,
+        ...listingQueries
     })
 });
 
 const RootMutation = new GraphQLObjectType({
     name: 'RootMutation',
     fields: () => ({
-        createBuyer: createBuyer,
-        updateBuyer: updateBuyer,
-        buyerLogin: buyerLogin,
-        savePreferences: savePreferences,
-        saveMatch: saveMatch,
-        deleteMatch: deleteMatch,
-
-        createSeller: createSeller,
-        updateSeller: updateSeller,
-        sellerLogin: sellerLogin,
-
-        createListing: createListing
+        ...buyerMutations,
+        ...sellerMutations,
+        ...listingMutations
     })
 });
 

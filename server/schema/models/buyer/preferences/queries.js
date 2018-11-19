@@ -1,8 +1,8 @@
 
 import { GraphQLID } from 'graphql';
-
 const Preference = require('../../../../models/buyer/preferences.model');
-export const preferences = {
+
+const preferences = {
     type: require('./types').preferenceType,
     args: { buyerID: { type: GraphQLID } },
     resolve(parent, {buyerID}) {
@@ -11,4 +11,8 @@ export const preferences = {
             return res;
         });
     }
+}
+
+export const preferencesQueries = {
+    preferences: preferences,
 }

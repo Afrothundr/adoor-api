@@ -10,7 +10,7 @@ const Buyer = require('../../../models/buyer/buyer.model');
 const PreferencesParentModel = require('../../../models/buyer/preferences.model');
 const NeighborHoodPreferenceModel = require('../../../models/buyer/neighborhood-preferences.model');
 const PropertyPreferenceModel = require('../../../models/buyer/property-preferences.model');
-export const createBuyer = {
+const createBuyer = {
     type: require('./types').buyerType,
     args: {
         input: { type: new GraphQLNonNull(buyerInputType) }
@@ -24,14 +24,14 @@ export const createBuyer = {
             password: await bcrypt.hash(input.password, 10),
             googleID: input.googleID,
             facebookID: input.facebookID,
-            likedListings: input.likedListings,
-            favoritedListings: input.favoritedListings
+            likedListings: [],
+            favoritedListings: []
         });
         return buyer.save();
     }
 }
 
-export const updateBuyer = {
+const updateBuyer = {
     type: require('./types').buyerType,
     args: {
         id: { type: GraphQLID },
@@ -47,7 +47,7 @@ export const updateBuyer = {
     }
 }
 
-export const buyerLogin = {
+const buyerLogin = {
     type: GraphQLString,
     args: {
         email: { type: GraphQLString },
@@ -71,7 +71,7 @@ export const buyerLogin = {
     }
 }
 
-export const savePreferences = {
+const savePreferences = {
     type: buyerType,
     args: {
         neighborhoodPreferences: { type: neighborhoodPreferenceInput },
@@ -94,11 +94,11 @@ export const savePreferences = {
                 $set: {
                     preferences: parentPreferencesDocument._id
                 }
-            });
+            }, {new: true});
     }
 }
 
-export const saveMatch = {
+const saveMatch = {
     type: buyerType,
     args: {
          listingId: { type: GraphQLID }
@@ -109,11 +109,11 @@ export const saveMatch = {
                 $push: {
                     matches: listingId
                 }
-        });
+        }, {new: true});
     }
 }
 
-export const deleteMatch = {
+const deleteMatch = {
     type: buyerType,
     args: {
          listingId: { type: GraphQLID }
@@ -125,6 +125,48 @@ export const deleteMatch = {
                 $pull: {
                     matches: listingId
                 }
-        });
+        }, {new: true});
     }
+}
+
+const favoriteMatch = {
+    type: buyerType,
+    args: {
+         listingId: { type: GraphQLID }
+    },
+    resolve: async (_, { listingId }, { user }) => {
+        return Buyer
+            .findByIdAndUpdate(user.id, {
+                $push: {
+                    favoriteMatches: listingId
+                },
+        }, {new: true});
+    }
+}
+
+const unfavoriteMatch = {
+    type: buyerType,
+    args: {
+         listingId: { type: GraphQLID }
+    },
+    resolve: async (_, { listingId }, { user }) => {
+
+        return Buyer
+            .findByIdAndUpdate(user.id, {
+                $pull: {
+                    favoriteMatches: listingId
+                }
+        }, {new: true});
+    }
+}
+
+export const buyerMutations = {
+    createBuyer: createBuyer,
+    updateBuyer: updateBuyer,
+    buyerLogin: buyerLogin,
+    savePreferences: savePreferences,
+    saveMatch: saveMatch,
+    deleteMatch: deleteMatch,
+    favoriteMatch: favoriteMatch,
+    unfavoriteMatch: unfavoriteMatch
 }

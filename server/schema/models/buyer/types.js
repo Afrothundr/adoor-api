@@ -41,14 +41,6 @@ export const buyerType = new GraphQLObjectType({
             type: GraphQLString,
             description: 'Facebook ID'
         },
-        likedListings: {
-            type: new GraphQLList(GraphQLString),
-            description: 'A list of matched listings'
-        },
-        favoritedListings: {
-            type: new GraphQLList(GraphQLString),
-            description: 'A list of favorited matched listings'
-        },
         preferences: {
             type: preferenceType,
             description: 'the preferences of the Buyer',
@@ -65,16 +57,16 @@ export const buyerType = new GraphQLObjectType({
         },
         matches: {
             type: new GraphQLList(listingType),
-            description: 'A list of property listings',
+            description: 'A list of matched listings',
             resolve(parent) {
                 return Listing.find({_id: {$in: parent.matches}});
             }
         },
         favoriteMatches: {
             type: new GraphQLList(listingType),
-            description: 'A list of property listings',
+            description: 'A list of favorited matched listings',
             resolve(parent) {
-                return Listing.find({records: {$in: parent.matches}});
+                return Listing.find({_id: {$in: parent.favoriteMatches}});
             }
         }
     })
@@ -113,14 +105,6 @@ export const buyerInputType = new GraphQLInputObjectType({
         facebookID: {
             description: 'Google OAuth Token',
             type: GraphQLString
-        },
-        likedListings: {
-            description: 'List of matched listings',
-            type: new GraphQLNonNull(new GraphQLList(GraphQLString))
-        },
-        favoritedListings: {
-            description: 'List of favorited listings',
-            type: new GraphQLNonNull(new GraphQLList(GraphQLString))
         }
     }
 });

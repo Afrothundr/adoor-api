@@ -2,7 +2,7 @@ import { GraphQLList } from 'graphql';
 
 const Buyer = require('../../../models/buyer/buyer.model');
 
-export const buyer = {
+const buyer = {
     type: require('./types').buyerType,
     resolve(_, args, { user }) {
         if(!user) throw new Error('Not Authenticated!');
@@ -10,9 +10,14 @@ export const buyer = {
     }
 }
 
-export const buyers = {
+const buyers = {
     type: new GraphQLList(require('./types').buyerType),
     resolve() {
         return Buyer.find({});
     }
+}
+
+export const buyerQueries = {
+    buyer: buyer,
+    buyers: buyers,
 }

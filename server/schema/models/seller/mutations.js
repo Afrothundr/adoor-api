@@ -6,7 +6,7 @@ require('dotenv').config();
 
 const Seller = require('../../../models/seller/seller.model');
 
-export const createSeller = {
+const createSeller = {
     type: require('./types').sellerType,
     args: {
         input: { type: new GraphQLNonNull(sellerInputType) }
@@ -26,7 +26,7 @@ export const createSeller = {
     }
 }
 
-export const updateSeller = {
+const updateSeller = {
     type: require('./types').sellerType,
     args: {
         id: { type: GraphQLID },
@@ -42,7 +42,7 @@ export const updateSeller = {
     }
 }
 
-export const sellerLogin = {
+const sellerLogin = {
     type: GraphQLString,
     args: {
         email: { type: GraphQLString },
@@ -64,4 +64,10 @@ export const sellerLogin = {
             { expiresIn: '1d' }
         )
     }
+}
+
+export const sellerMutations = {
+    createSeller: createSeller,
+    updateSeller: updateSeller,
+    sellerLogin: sellerLogin,
 }
