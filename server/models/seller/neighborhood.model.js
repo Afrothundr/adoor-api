@@ -3,11 +3,13 @@ const Schema = mongoose.Schema;
 
 const neighborhoodSchema = new Schema({
     listingID: Schema.Types.ObjectId,
-    schoolChoice : Number,
-    groceryStores : Number,
-    hospitals : Number,
-    crimeScore : Number,
-    parks : Number     
+    schoolRank : Number,
+    groceryRank : Number,
+    hospitalRank : Number,
+    crimeRank : Number,
+    parksRank : Number,
+    gymRank: Number,
+    entertainmentRank: Number
 });
 
 module.exports = mongoose.model('Neighborhood', neighborhoodSchema);

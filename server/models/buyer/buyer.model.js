@@ -8,7 +8,8 @@ const buyerSchema = new Schema({
     phoneNumber: String,
     password: String,
     googleID: String,
-    facebookID: String
+    facebookID: String,
+    preferences:  Schema.Types.ObjectId
 });
 
 module.exports = mongoose.model('Buyer', buyerSchema);

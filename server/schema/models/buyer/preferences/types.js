@@ -1,9 +1,9 @@
 import { GraphQLObjectType, GraphQLID, GraphQLString } from "graphql";
 import { propertyPreference } from "./property-preferences/types";
-import { neighboorhoodPreference } from "./neighborhood-preferences/types";
+import { neighborhoodPreference } from "./neighborhood-preferences/types";
 
 const PropertyPreferences = require('../../../../models/buyer/property-preferences.model');
-const NeighboorhoodPreferences = require('../../../../models/buyer/neighborhood-preferences.model');
+const NeighborhoodPreferences = require('../../../../models/buyer/neighborhood-preferences.model');
 
 export const preferenceType = new GraphQLObjectType({
     name: "preferences",
@@ -15,14 +15,14 @@ export const preferenceType = new GraphQLObjectType({
             type: propertyPreference,
             description: 'Propery preferences for the Buyer',
             resolve(parent) {
-                return PropertyPreferences.find({ preferencesID: parent.id });
+                return PropertyPreferences.findOne(parent.propertyPreference);
             }
         },
-        neighboorhoodPreference: {
-            type: neighboorhoodPreference,
-            description: 'Neighboorhood preferences for the Buyer',
+        neighborhoodPreference: {
+            type: neighborhoodPreference,
+            description: 'Neighborhood preferences for the Buyer',
             resolve(parent) {
-                return NeighboorhoodPreferences.find({ preferencesID: parent.id });
+                return NeighborhoodPreferences.findOne(parent.neighborhoodPreference);
             }
         }
     })

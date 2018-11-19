@@ -9,25 +9,34 @@ export const neighborhoodType = new GraphQLObjectType({
             type: GraphQLString,
             description: 'id of listing parent listing property'
         },
-        schoolChoice: {
+        schoolRank: {
             type: GraphQLInt,
             description: 'Number of schools in the area'
         },
-        groceryStores: {
+        groceryRank: {
             type: GraphQLInt,
             description: 'Number of grocery stores in the area'
         },
-        hospitals: {
+        hospitalRank: {
             type: GraphQLInt,
             description: 'Number of hospitals/clinics in the area'
         },
-        crimeScore: {
+        crimeRank: {
             type: GraphQLInt,
             description: 'Number of property crimes in a year commited in the area'
         },
-        parks: {
+        parksRank: {
+            type: GraphQLInt,
+            description: 'Number of parks in the area'
+        },
+        gymRank: {
+            type: GraphQLInt,
+            description: 'Number of parks in the area'
+        },
+        entertainmentRank: {
             type: GraphQLInt,
             description: 'Number of parks in the area'
         }
+
     })
 });
