@@ -16,6 +16,8 @@ const listingSchema = new Schema({
     squareFootage: Number,
     price: Number,
     priceHistory: [Number],
+    created: Date,
+    updated: Date,
     views: Number,
     yearBuilt: Number,
     renovatedYearn: Number,
