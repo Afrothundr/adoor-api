@@ -14,8 +14,13 @@ const auth = jwt({
     credentialsRequired: false
 })
 //connect to database
-// mongoose.connect('mongodb://admin:adoorR0cks@ds231501.mlab.com:31501/adoor-api_dev', {useNewUrlParser: true});
-mongoose.connect("mongodb://localhost:27017/adoor-dev", { useNewUrlParser: true });
+const mongoUserCredentials = `${process.env.MONGO_USER}:${process.env.MONGO_PASSWORD}@`;
+const MONGO_URL = process.env.MONGO_URL;
+const DB_NAME = process.env.MONGO_DB_NAME;
+const MONGO_CONNECTION_STRING = `mongodb://${mongoUserCredentials}${MONGO_URL}/${DB_NAME}`;
+
+MONGO_URL ? mongoose.connect(MONGO_CONNECTION_STRING,  {useNewUrlParser: true}) : mongoose.connect("mongodb://localhost:27017/adoor-dev", { useNewUrlParser: true });
+
 
 mongoose.connection.once('open', () => {
     console.log('connected to database');
