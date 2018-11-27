@@ -10,6 +10,8 @@ const Buyer = require('../../../models/buyer/buyer.model');
 const PreferencesParentModel = require('../../../models/buyer/preferences.model');
 const NeighborHoodPreferenceModel = require('../../../models/buyer/neighborhood-preferences.model');
 const PropertyPreferenceModel = require('../../../models/buyer/property-preferences.model');
+const APIAuthKey = require('../../../models/api-auth.model');
+
 const createBuyer = {
     type: require('./types').buyerType,
     args: {
@@ -51,9 +53,10 @@ const buyerLogin = {
     type: GraphQLString,
     args: {
         email: { type: GraphQLString },
-        password: { type: GraphQLString }
+        password: { type: GraphQLString },
+        apiKey: { type: GraphQLString }
     },
-    resolve: async (parent, { email, password }) => {
+    resolve: async (parent, { email, password, apiKey }) => {
         const buyer = await Buyer.findOne({ email: email });
         if (!buyer) {
             return 'email does not match any records';
@@ -62,7 +65,8 @@ const buyerLogin = {
         if (!valid) {
             throw new Error('Incorrect password')
         }
-
+        const authenticated = await APIAuthKey.findOne({apiKey: apiKey});
+        if (!authenticated) throw new Error('Invalid API key');
         return jsonwebtoken.sign(
             { id: buyer.id, email: buyer.email },
             process.env.JWT_SECRET,

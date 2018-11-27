@@ -5,6 +5,7 @@ const jsonwebtoken = require('jsonwebtoken');
 require('dotenv').config();
 
 const Seller = require('../../../models/seller/seller.model');
+const APIAuthKey = require('../../../models/api-auth.model');
 
 const createSeller = {
     type: require('./types').sellerType,
@@ -46,9 +47,10 @@ const sellerLogin = {
     type: GraphQLString,
     args: {
         email: { type: GraphQLString },
-        password: { type: GraphQLString }
+        password: { type: GraphQLString },
+        apiKey: { type: GraphQLString }
     },
-    resolve: async (parent, { email, password }) => {
+    resolve: async (parent, { email, password, apiKey }) => {
         const seller = await Seller.findOne({ email: email });
         if (!seller) {
             return new Error('email does not match any records');
@@ -57,6 +59,8 @@ const sellerLogin = {
         if (!valid) {
             throw new Error('Incorrect password');
         }
+        const authenticated = await APIAuthKey.findOne({apiKey: apiKey});
+        if (!authenticated) throw new Error('Invalid API key');
 
         return jsonwebtoken.sign(
             { id: seller.id, email: seller.email },

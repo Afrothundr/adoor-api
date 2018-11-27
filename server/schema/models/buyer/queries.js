@@ -12,7 +12,7 @@ const buyer = {
 
 const buyers = {
     type: new GraphQLList(require('./types').buyerType),
-    resolve() {
+    async resolve(_, { apiKey }, { user }) {
         return Buyer.find({});
     }
 }
