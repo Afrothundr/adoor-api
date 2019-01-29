@@ -36,7 +36,7 @@ const updateSeller = {
     resolve: (parent, { id, update }) => {
         return Seller.findOneAndUpdate({ _id: id }, update, (err, res) => {
             if (err) {
-                return err;
+                throw new Error(err);
             }
             return res;
         })
@@ -53,7 +53,7 @@ const sellerLogin = {
     resolve: async (parent, { email, password, apiKey }) => {
         const seller = await Seller.findOne({ email: email });
         if (!seller) {
-            return new Error('email does not match any records');
+            throw new Error('email does not match any records');
         }
         const valid = await bcrypt.compare(password, seller.password)
         if (!valid) {
