@@ -1,4 +1,4 @@
-import { GraphQLList } from 'graphql';
+import { GraphQLList, GraphQLBoolean, GraphQLString } from 'graphql';
 
 const Buyer = require('../../../models/buyer/buyer.model');
 
@@ -17,7 +17,20 @@ const buyers = {
     }
 }
 
+const isBuyerEmailAvailable = {
+    type: GraphQLBoolean,
+    args: { email: { type: GraphQLString } },
+    resolve(_, { email }) {
+        return Buyer.findOne({ email: email }).then((result) => {
+            return result ? false : true;
+        }).catch(err => {
+            throw new Error(err);
+        });
+    }
+}
+
 export const buyerQueries = {
     buyer: buyer,
     buyers: buyers,
+    isBuyerEmailAvailable: isBuyerEmailAvailable
 }
