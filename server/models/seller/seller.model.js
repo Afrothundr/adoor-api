@@ -11,6 +11,7 @@ const sellerSchema = new Schema({
     password: String,
     email: String,
     company: String,
+    title: String,
     profilePicture: String,
     listings: [Schema.Types.ObjectId]
 });

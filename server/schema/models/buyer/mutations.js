@@ -1,7 +1,7 @@
 import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
 import { neighborhoodPreferenceInput } from './preferences/neighborhood-preferences/types';
 import { propertyPreferenceInput } from './preferences/property-preferences/types';
-import { buyerInputType, buyerType } from './types';
+import { buyerInputType, buyerReturnType } from './types';
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
 require('dotenv').config();
@@ -13,7 +13,7 @@ const PropertyPreferenceModel = require('../../../models/buyer/property-preferen
 const APIAuthKey = require('../../../models/api-auth.model');
 
 const createBuyer = {
-    type: require('./types').buyerType,
+    type: require('./types').buyerReturnType,
     args: {
         input: { type: new GraphQLNonNull(buyerInputType) }
     },
@@ -34,13 +34,16 @@ const createBuyer = {
 }
 
 const updateBuyer = {
-    type: require('./types').buyerType,
+    type: require('./types').buyerReturnType,
     args: {
-        id: { type: GraphQLID },
-        update: { type: buyerInputType }
+        update: { type: buyerInputType },
+        apiKey: { type: GraphQLString}
     },
-    resolve: (parent, { id, update }) => {
-        return Buyer.findOneAndUpdate({ _id: id }, update, (err, res) => {
+    resolve: async (_, { update, apiKey }, {user}) => {
+        const authenticated = await APIAuthKey.findOne({ apiKey: apiKey });
+        if (!authenticated) throw new Error('Invalid API key');
+
+        return Buyer.findOneAndUpdate({ _id: user.id }, update, (err, res) => {
             if (err) {
                 throw new Error(err);
             }
@@ -76,7 +79,7 @@ const buyerLogin = {
 }
 
 const savePreferences = {
-    type: buyerType,
+    type: buyerReturnType,
     args: {
         neighborhoodPreferences: { type: neighborhoodPreferenceInput },
         propertyPreferences: { type: propertyPreferenceInput }
@@ -103,7 +106,7 @@ const savePreferences = {
 }
 
 const saveMatch = {
-    type: buyerType,
+    type: buyerReturnType,
     args: {
          listingId: { type: GraphQLID }
     },
@@ -118,7 +121,7 @@ const saveMatch = {
 }
 
 const deleteMatch = {
-    type: buyerType,
+    type: buyerReturnType,
     args: {
          listingId: { type: GraphQLID }
     },
@@ -134,7 +137,7 @@ const deleteMatch = {
 }
 
 const favoriteMatch = {
-    type: buyerType,
+    type: buyerReturnType,
     args: {
          listingId: { type: GraphQLID }
     },
@@ -149,7 +152,7 @@ const favoriteMatch = {
 }
 
 const unfavoriteMatch = {
-    type: buyerType,
+    type: buyerReturnType,
     args: {
          listingId: { type: GraphQLID }
     },

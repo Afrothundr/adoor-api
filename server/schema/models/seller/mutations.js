@@ -1,5 +1,5 @@
-import { GraphQLID, GraphQLNonNull, GraphQLString } from 'graphql';
-import { sellerInputType } from './types';
+import { GraphQLNonNull, GraphQLString } from 'graphql';
+import { sellerInputType, sellerReturnType } from './types';
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
 require('dotenv').config();
@@ -8,7 +8,7 @@ const Seller = require('../../../models/seller/seller.model');
 const APIAuthKey = require('../../../models/api-auth.model');
 
 const createSeller = {
-    type: require('./types').sellerType,
+    type: require('./types').sellerReturnType,
     args: {
         input: { type: new GraphQLNonNull(sellerInputType) }
     },
@@ -28,18 +28,21 @@ const createSeller = {
 }
 
 const updateSeller = {
-    type: require('./types').sellerType,
+    type: require('./types').sellerReturnType,
     args: {
-        id: { type: GraphQLID },
-        update: { type: sellerInputType }
+        update: { type: sellerInputType },
+        apiKey: { type: GraphQLString }
     },
-    resolve: (parent, { id, update }) => {
-        return Seller.findOneAndUpdate({ _id: id }, update, (err, res) => {
+    resolve: async (_, { update, apiKey }, { user }) => {
+        const authenticated = await APIAuthKey.findOne({ apiKey: apiKey });
+        if (!authenticated) throw new Error('Invalid API key');
+
+        return Seller.findOneAndUpdate({ _id: user.id }, update, (err, res) => {
             if (err) {
                 throw new Error(err);
             }
             return res;
-        })
+        });
     }
 }
 
@@ -50,7 +53,7 @@ const sellerLogin = {
         password: { type: GraphQLString },
         apiKey: { type: GraphQLString }
     },
-    resolve: async (parent, { email, password, apiKey }) => {
+    resolve: async (_, { email, password, apiKey }) => {
         const seller = await Seller.findOne({ email: email });
         if (!seller) {
             throw new Error('email does not match any records');
@@ -59,7 +62,7 @@ const sellerLogin = {
         if (!valid) {
             throw new Error('Incorrect password');
         }
-        const authenticated = await APIAuthKey.findOne({apiKey: apiKey});
+        const authenticated = await APIAuthKey.findOne({ apiKey: apiKey });
         if (!authenticated) throw new Error('Invalid API key');
 
         return jsonwebtoken.sign(
