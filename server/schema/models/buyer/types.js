@@ -108,3 +108,63 @@ export const buyerInputType = new GraphQLInputObjectType({
         }
     }
 });
+
+export const buyerReturnType = new GraphQLObjectType({
+    name: "buyerReturnType",
+    description: 'buyer looking for a property listing',
+    fields: () => ({
+        id: { type: GraphQLID },
+        firstName: {
+            type: GraphQLString,
+            description: 'Buyer First Name'
+        },
+        lastName: {
+            type: GraphQLString,
+            description: 'Buyer Last Name'
+        },
+        email: {
+            type: GraphQLString,
+            description: 'Buyer email address'
+        },
+        phoneNumber: {
+            type: GraphQLString,
+            description: 'Buyer phone number'
+        },
+        googleID: {
+            type: GraphQLString,
+            description: 'Google ID'
+        },
+        facebookID: {
+            type: GraphQLString,
+            description: 'Facebook ID'
+        },
+        preferences: {
+            type: preferenceType,
+            description: 'the preferences of the Buyer',
+            resolve(parent) {
+                return Preference.find({ buyerID: parent.id });
+            }
+        },
+        demographics: {
+            type: demographicsType,
+            description: 'the demographics of the Buyer',
+            resolve(parent) {
+                return Demographics.find({ buyerID: parent.id });
+            }
+        },
+        matches: {
+            type: new GraphQLList(listingType),
+            description: 'A list of matched listings',
+            resolve(parent) {
+                return Listing.find({_id: {$in: parent.matches}});
+            }
+        },
+        favoriteMatches: {
+            type: new GraphQLList(listingType),
+            description: 'A list of favorited matched listings',
+            resolve(parent) {
+                return Listing.find({_id: {$in: parent.favoriteMatches}});
+            }
+        }
+    })
+});

@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon -w server/ --exec 'NODE_ENV=development nodemon server/'",
-    "start": "SET NODE_ENV=production & nodemon server/"
+    "start": "SET NODE_ENV=production & nodemon server/",
+    "debug": "nodemon --inspect server/"
   },
   "repository": {
     "type": "git",

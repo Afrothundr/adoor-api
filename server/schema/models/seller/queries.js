@@ -2,7 +2,7 @@ import { GraphQLList, GraphQLBoolean, GraphQLString } from 'graphql';
 const Seller = require('../../../models/seller/seller.model');
 
 const seller = {
-    type: require('./types').sellerType,
+    type: require('./types').sellerReturnType,
     resolve(_, args, { user }) {
         if (!user) throw new Error('Not Authenticated!');
         return Seller.findById(user.id);
@@ -10,7 +10,7 @@ const seller = {
 }
 
 const sellers = {
-    type: new GraphQLList(require('./types').sellerType),
+    type: new GraphQLList(require('./types').sellerReturnType),
     resolve() {
         return Seller.find({});
     }
