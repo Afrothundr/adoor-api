@@ -168,3 +168,23 @@ export const buyerReturnType = new GraphQLObjectType({
         }
     })
 });
+
+export const buyerListingReturnType = new GraphQLObjectType({
+    name: "buyerListingReturnType",
+    description: 'the buyer profile a seller has access to',
+    fields: () => ({
+        id: { type: GraphQLID },
+        firstName: {
+            type: GraphQLString,
+            description: 'Buyer First Name'
+        },
+        lastName: {
+            type: GraphQLString,
+            description: 'Buyer Last Name'
+        },
+        email: {
+            type: GraphQLString,
+            description: 'Buyer email address'
+        }
+    })
+});

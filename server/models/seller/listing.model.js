@@ -15,6 +15,8 @@ const listingSchema = new Schema({
     bathrooms: Number,
     squareFootage: Number,
     price: Number,
+    lowPrice: Number,
+    highPrice: Number,
     priceHistory: [Number],
     created: Date,
     updated: Date,
@@ -26,6 +28,7 @@ const listingSchema = new Schema({
     kitchenType: String,
     laundry: String,
     fireplace: Boolean,
+    matches: [Schema.Types.ObjectId],
     outdoor_features: Schema.Types.ObjectId,
     neighborhood: Schema.Types.ObjectId
 });

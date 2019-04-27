@@ -15,11 +15,13 @@ import {
 import { outdoorFeaturesType} from './outdoor-features/types';
 import { neighborhoodType } from './neighborhood/types';
 import { sellerType } from '../types';
+import { buyerListingReturnType } from '../../buyer/types';
 
 
 const Neighborhood = require('../../../../models/seller/neighborhood.model');
 const OutdoorFeatures = require('../../../../models/seller/outdoor-features.model');
 const Seller = require('../../../../models/seller/seller.model');
+const Buyer = require('../../../../models/buyer/buyer.model');
 
 export const listingType = new GraphQLObjectType({
     name: "listing",
@@ -74,6 +76,12 @@ export const listingType = new GraphQLObjectType({
         price: {
             type: GraphQLInt
         },
+        lowPrice: {
+            type: GraphQLInt
+        },
+        highPrice: {
+            type: GraphQLInt
+        },
         priceHistory: {
             type: new GraphQLList(GraphQLInt)
         },
@@ -114,6 +122,13 @@ export const listingType = new GraphQLObjectType({
         fireplace: {
             type: GraphQLBoolean,
             description: 'does property have fireplace'
+        },
+        matches: {
+            type: new GraphQLList(buyerListingReturnType),
+            description: 'matches on listing',
+            resolve(parent) {
+                return Buyer.find({matches: parent.id});
+            }
         },
         neighborhood: {
             type: neighborhoodType,
@@ -167,6 +182,12 @@ export const listingInputType = new GraphQLInputObjectType({
         },
         price: {
             type: new GraphQLNonNull(GraphQLInt)
+        },
+        lowPrice: {
+            type: GraphQLInt
+        },
+        highPrice: {
+            type: GraphQLInt
         },
         priceHistory: {
             type: new GraphQLNonNull(new GraphQLList(GraphQLInt))
@@ -239,6 +260,12 @@ export const listingUpdateInputType = new GraphQLInputObjectType({
         },
         price: {
             type: new GraphQLNonNull(GraphQLInt)
+        },
+        lowPrice: {
+            type: GraphQLInt
+        },
+        highPrice: {
+            type: GraphQLInt
         },
         yearBuilt: {
             type: new GraphQLNonNull(GraphQLInt)
